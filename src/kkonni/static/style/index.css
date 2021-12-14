@@ -1,0 +1,10 @@
+#recipes {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+}
+
+#recipes > li > .header {
+    display: flex;
+}

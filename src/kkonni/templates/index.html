@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Kooking Konni</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
+</head>
+<body>
+
+<div id="top-bar">
+    <input type="text" id="search" name="search">
+    <a id="new" href="{{ url_for('book.open_new_recipe') }}">New</a>
+    <a href="{% if logged_in %}{{ url_for('auth.logout') }}{% else %}{{ url_for('auth.login') }}{% endif %}">
+        {% if logged_in %}Logout{% else %}Login{% endif %}
+    </a>
+</div>
+
+<ul id="recipes">
+    {% for r in recipes %}
+        <li class="recipe" data-keywords="{{ r.keywords }}">
+            <div class="header">
+                <div class="title"><a href="{{ url_for('book.open_recipe', rid=r.rid) }}">{{ r.name }}</a></div>
+                <div class="rating">{{ r.rating }}</div>
+            </div>
+            <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

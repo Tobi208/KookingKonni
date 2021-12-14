@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit {{ r.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
+</head>
+<body>
+
+<div id="top-bar">
+    <input type="text" id="search" name="search">
+    <input type="button" id="new" name="new" value="New">
+    <input type="button" id="delete" name="delete" value="Delete">
+    <input type="button" id="login" name="login" value="Logout">
+</div>
+
+<div id="form-container">
+    <form id="form" autocomplete="off" method="post" enctype="multipart/form-data" action="">
+
+        <div id="header">
+
+            <div class="v-cont">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" value="{{ r.name }}" required>
+            </div>
+
+            <div class="v-cont">
+                <label for="rating">Rating</label>
+                <input type="number" id="rating" name="rating" value="{{ r.rating }}" required>
+            </div>
+
+        </div>
+
+        <div class="h-cont">
+
+            <div id="portions-cont">
+                <input type="number" id="portions" name="portions" value="{{ r.portions }}" required>
+                <label for="portions">Portions</label>
+            </div>
+
+            <div class="h-cont">
+                <label for="image">Image</label>
+                <input type="file" id="image" name="image" accept=".png,.jpg">
+            </div>
+
+        </div>
+
+        <table id="tb-ings">
+            <tr id="tb-ings-header">
+                <th>Amount</th>
+                <th>Unit</th>
+                <th>Description</th>
+            </tr>
+            {% for ing in ings %}
+                <tr>
+                    <td><input type="number" name="amount-{{ loop.index0 }}" class="amount" value="{{ ing['amount'] }}"
+                               required></td>
+                    <td><input type="text" name="unit-{{ loop.index0 }}" class="unit" value="{{ ing['unit'] }}"
+                               required></td>
+                    <td><input type="text" name="name-{{ loop.index0 }}" class="name" value="{{ ing['name'] }}"
+                               required></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>
+                    <button type="button" id="add-row">+</button>
+                    <button type="button" id="remove-row">-</button>
+                </td>
+            </tr>
+        </table>
+
+        <div class="v-cont">
+            <label for="instructions">Instructions</label>
+            <textarea id="instructions" name="instructions" required>{{ r.instructions }}</textarea>
+        </div>
+
+        <div id="tags-source-cont">
+
+            <div class="v-cont">
+                <label for="tags">Tags</label>
+                <input type="text" id="tags" name="tags" value="{{ r.tags }}" required>
+            </div>
+
+            <div class="v-cont">
+                <label for="source">Source</label>
+                <input type="text" id="source" name="source" value="{{ r.source }}" required>
+            </div>
+
+        </div>
+
+        <div id="buttons">
+            <button type="button" id="cancel">Cancel</button>
+            <button type="submit" name="confirm">Save</button>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

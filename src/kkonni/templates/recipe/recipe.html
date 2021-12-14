@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ r.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
+</head>
+<body>
+
+<div id="top-bar">
+    <input type="text" id="search" name="search">
+    <input type="button" id="edit" name="edit" value="Edit">
+    <input type="button" id="delete" name="delete" value="Delete">
+    <a href="{% if logged_in %}{{ url_for('auth.logout') }}{% else %}{{ url_for('auth.login') }}{% endif %}">
+        {% if logged_in %}Logout{% else %}Login{% endif %}
+    </a>
+</div>
+
+<div id="recipe">
+
+    <div id="header">
+        <div id="name">{{ r.name }}</div>
+        <div id="rating">{{ r.rating }}</div>
+    </div>
+
+    <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
+
+    <table id="tb-ings">
+        <tr>
+            <th><input id="portions" type="number" autocomplete="off" value="{{ r.portions }}"></th>
+            <th colspan="2"><label class="portions-label" for="portions">Portionen</label></th>
+        </tr>
+        {% for ing in ings %}
+        <tr>
+            <td class="td-amount">
+                <div class="amount">{{ ing['amount'] }}</div>
+            </td>
+            <td class="td-unit">
+                <div class="unit">{{ ing['unit'] }}</div>
+            </td>
+            <td class="td-name">
+                <div class="name">{{ ing['name'] }}</div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div id="instructions">
+        {% for instruction in r.instructions.split('\n') %}
+        <p class="instruction">{{ instruction }}</p>
+        {% endfor %}
+    </div>
+
+    <div id="footer">
+        <div id="tags">
+            {% for tag in r.tags.split(' ') %}
+            <div class="tag">{{ tag }}</div>
+            {% endfor %}
+        </div>
+
+        <div id="source">{{ r.source }}</div>
+    </div>
+
+</div>
+
+</body>
+</html>
