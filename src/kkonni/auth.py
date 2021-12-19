@@ -22,7 +22,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if not session['is_logged_in']:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.login', next=request.url))
 
         return view(**kwargs)
 
@@ -61,8 +61,7 @@ def login():
             # store the user id in a new session and return to the index
             session.clear()
             session['is_logged_in'] = True
-            print('logged in :)')
-            return redirect(request.referrer)
+            return redirect(request.args.get('next'))
 
         flash(error)
 
@@ -75,4 +74,4 @@ def logout():
     Clear the current session, including the stored user id.
     """
     session.clear()
-    return redirect(request.referrer)
+    return redirect(url_for('book.index'))

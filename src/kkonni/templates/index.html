@@ -11,17 +11,20 @@
 
 <div id="top-bar">
     <input type="text" id="search" name="search">
-    <a id="new" href="{{ url_for('book.open_new_recipe') }}">New</a>
-    <a href="{% if logged_in %}{{ url_for('auth.logout') }}{% else %}{{ url_for('auth.login') }}{% endif %}">
-        {% if logged_in %}Logout{% else %}Login{% endif %}
-    </a>
+    <form action="{{ url_for('book.new_recipe') }}" method="GET">
+        <button type="submit" id="new" name="delete">Neu</button>
+    </form>
+    <form action="{% if logged_in %}{{ url_for('auth.logout') }}{% else %}{{ url_for('auth.login') }}{% endif %}"
+    method="GET">
+        <button type="submit" id="login" name="login">{% if logged_in %}Logout{% else %}Login{% endif %}</button>
+    </form>
 </div>
 
 <ul id="recipes">
     {% for r in recipes %}
         <li class="recipe" data-keywords="{{ r.keywords }}">
             <div class="header">
-                <div class="title"><a href="{{ url_for('book.open_recipe', rid=r.rid) }}">{{ r.name }}</a></div>
+                <div class="title"><a href="{{ url_for('book.recipe', rid=r.rid) }}">{{ r.name }}</a></div>
                 <div class="rating">{{ r.rating }}</div>
             </div>
             <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">

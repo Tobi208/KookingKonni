@@ -10,9 +10,9 @@
 
 <div id="top-bar">
     <input type="text" id="search" name="search">
-    <input type="button" id="edit" name="edit" value="Edit">
-    <input type="button" id="delete" name="delete" value="Delete">
-    <input type="button" id="login" name="login" value="Logout">
+    <form action="{{ url_for('auth.logout') }}" method="GET">
+        <button type="submit" id="login" name="login">Logout</button>
+    </form>
 </div>
 
 <div id="form-container">
@@ -85,8 +85,8 @@
         </div>
 
         <div id="buttons">
-            <button type="submit" name="confirm">Save</button>
-            <button type="button" id="cancel">Cancel</button>
+            <button type="submit" name="confirm">Speichern</button>
+            <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.index') }}')">Cancel</button>
         </div>
 
     </form>

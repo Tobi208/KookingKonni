@@ -1,1 +1,2 @@
 https://github.com/pallets/flask/tree/2.0.2/examples/tutorial/flaskr
+https://stackoverflow.com/questions/20766291/flask-login-not-redirecting-to-previous-page

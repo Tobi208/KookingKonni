@@ -1,6 +1,6 @@
 from json import loads
 
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, redirect, url_for
 
 from kkonni.auth import login_required
 from kkonni.db import get_db
@@ -14,7 +14,7 @@ bp = Blueprint("book", __name__)
 
 
 @bp.route('/')
-def open_index():
+def index():
     cur = get_db().cursor()
     cur.execute("SELECT rid, name, image, rating, keywords FROM cookbook ORDER BY rid")
     recipes = cur.fetchall()
@@ -23,30 +23,39 @@ def open_index():
 
 
 @bp.route('/<int:rid>')
-def open_recipe(rid):
+def recipe(rid):
     cur = get_db().cursor()
     q = "SELECT * FROM cookbook WHERE rid = ?"
     cur.execute(q, (rid,))
-    recipe = cur.fetchone()
-    ingredients = loads(recipe['ingredients'])
+    r = cur.fetchone()
+    ingredients = loads(r['ingredients'])
 
-    return render_template('recipe/recipe.html', logged_in=session['is_logged_in'], r=recipe, ings=ingredients)
+    return render_template('recipe/recipe.html', logged_in=session['is_logged_in'], r=r, ings=ingredients)
 
 
 @bp.route('/edit/<int:rid>')
 @login_required
-def open_edit_recipe(rid):
+def edit_recipe(rid):
     cur = get_db().cursor()
     q = "SELECT * FROM cookbook WHERE rid = ?"
     cur.execute(q, (rid,))
-    recipe = cur.fetchone()
-    ingredients = loads(recipe['ingredients'])
+    r = cur.fetchone()
+    ingredients = loads(r['ingredients'])
 
-    return render_template('recipe/edit_recipe.html', r=recipe, ings=ingredients)
+    return render_template('recipe/edit_recipe.html', r=r, ings=ingredients)
 
 
 @bp.route('/new')
 @login_required
-def open_new_recipe():
+def new_recipe():
 
     return render_template('recipe/new_recipe.html')
+
+
+@bp.route('/delete/<int:rid>')
+@login_required
+def delete_recipe(rid):
+
+    # delete stuff
+
+    return redirect(url_for('book.index'))

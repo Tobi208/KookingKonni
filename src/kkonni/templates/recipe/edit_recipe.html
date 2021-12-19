@@ -10,9 +10,15 @@
 
 <div id="top-bar">
     <input type="text" id="search" name="search">
-    <input type="button" id="new" name="new" value="New">
-    <input type="button" id="delete" name="delete" value="Delete">
-    <input type="button" id="login" name="login" value="Logout">
+    <form action="{{ url_for('book.new_recipe') }}" method="GET">
+        <button type="submit" id="new" name="delete">Neu</button>
+    </form>
+    <form action="{{ url_for('book.delete_recipe', rid=r.rid) }}" method="GET">
+        <button type="submit" id="delete" name="delete">Löschen</button>
+    </form>
+    <form action="{{ url_for('auth.logout') }}" method="GET">
+        <button type="submit" id="login" name="login">Logout</button>
+    </form>
 </div>
 
 <div id="form-container">
@@ -90,8 +96,8 @@
         </div>
 
         <div id="buttons">
-            <button type="button" id="cancel">Cancel</button>
-            <button type="submit" name="confirm">Save</button>
+            <button type="submit" name="confirm">Speichern</button>
+            <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.recipe', rid=r.rid) }}')">Cancel</button>
         </div>
 
     </form>
