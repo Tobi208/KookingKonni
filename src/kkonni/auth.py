@@ -61,7 +61,9 @@ def login():
             # store the user id in a new session and return to the index
             session.clear()
             session['is_logged_in'] = True
-            return redirect(request.args.get('next'))
+            next_url = request.args.get('next')
+            next_url = next_url if next_url else url_for('book.index')
+            return redirect(next_url)
 
         flash(error)
 
