@@ -70,23 +70,14 @@
             <textarea id="instructions" name="instructions" required></textarea>
         </div>
 
-        <div id="tags-source-cont">
-
-            <div class="v-cont">
-                <label for="tags">Tags</label>
-                <input type="text" id="tags" name="tags" required>
-            </div>
-
-            <div class="v-cont">
-                <label for="source">Source</label>
-                <input type="text" id="source" name="source" required>
-            </div>
-
+        <div class="v-cont">
+            <label for="tags">Tags</label>
+            <input type="text" id="tags" name="tags" required>
         </div>
 
         <div id="buttons">
             <button type="submit" name="confirm">Speichern</button>
-            <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.index') }}')">Cancel</button>
+            <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.index') }}')">Abbrechen</button>
         </div>
 
     </form>

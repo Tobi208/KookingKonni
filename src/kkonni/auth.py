@@ -21,21 +21,12 @@ def login_required(view):
 
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if not session['is_logged_in']:
+        if 'uid' not in session:
             return redirect(url_for('auth.login', next=request.url))
 
         return view(**kwargs)
 
     return wrapped_view
-
-
-@bp.before_app_request
-def load_logged_in_user():
-    """If a user id is stored in the session, load the user object from
-    the database into ``g.user``."""
-
-    if 'is_logged_in' not in session:
-        session['is_logged_in'] = False
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -60,7 +51,7 @@ def login():
         if error is None:
             # store the user id in a new session and return to the index
             session.clear()
-            session['is_logged_in'] = True
+            session['uid'] = user['uid']
             next_url = request.args.get('next')
             next_url = next_url if next_url else url_for('book.index')
             return redirect(next_url)

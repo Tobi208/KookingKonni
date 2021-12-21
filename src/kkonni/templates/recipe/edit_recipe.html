@@ -81,23 +81,14 @@
             <textarea id="instructions" name="instructions" required>{{ r.instructions }}</textarea>
         </div>
 
-        <div id="tags-source-cont">
-
-            <div class="v-cont">
-                <label for="tags">Tags</label>
-                <input type="text" id="tags" name="tags" value="{{ r.tags }}" required>
-            </div>
-
-            <div class="v-cont">
-                <label for="source">Source</label>
-                <input type="text" id="source" name="source" value="{{ r.source }}" required>
-            </div>
-
+        <div class="v-cont">
+            <label for="tags">Tags</label>
+            <input type="text" id="tags" name="tags" value="{{ r.tags }}" required>
         </div>
 
         <div id="buttons">
             <button type="submit" name="confirm">Speichern</button>
-            <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.recipe', rid=r.rid) }}')">Cancel</button>
+            <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.recipe', rid=r.rid) }}')">Abbrechen</button>
         </div>
 
     </form>
