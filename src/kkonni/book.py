@@ -43,15 +43,10 @@ def edit_recipe(rid):
     if request.method == 'POST':
         form = request.form
 
-        name, rating, portions, ings, instructions, tags = _parse_form_static(form)
-
         cur = get_db().cursor()
         author_uid, image = cur.execute('SELECT author, image FROM cookbook WHERE rid = ?', (rid,)).fetchone()
-        author = cur.execute('SELECT username FROM auth WHERE uid = ?', author_uid).fetchone()[0]
-
-        keywords = ' '.join([name, tags, author, *[ing['name'] for ing in ings]])
-        keywords = ' '.join(set(split(r'\s+|-', keywords)))
-        ings = dumps(ings)
+        author = cur.execute('SELECT username FROM auth WHERE uid = ?', (author_uid,)).fetchone()[0]
+        name, rating, portions, ings, instructions, tags, keywords = _parse_form_static(form, author)
 
         q = 'UPDATE cookbook SET name = ?, portions = ?, ingredients = ?, instructions = ?, ' \
             'image = ?, rating = ?, tags = ?, keywords = ? WHERE rid = ?'
@@ -71,15 +66,10 @@ def new_recipe():
     if request.method == 'POST':
         form = request.form
 
-        name, rating, portions, ings, instructions, tags = _parse_form_static(form)
-
         cur = get_db().cursor()
         author = session['uid']
-
+        name, rating, portions, ings, instructions, tags, keywords = _parse_form_static(form, author)
         image = ''
-        keywords = ' '.join([name, tags, author, *[ing['name'] for ing in ings]])
-        keywords = ' '.join(set(split(r'\s+|-', keywords)))
-        ings = dumps(ings)
 
         q = 'INSERT INTO cookbook (name, portions, ingredients, instructions, image, rating, author, tags, keywords)' \
             'VALUES (?,?,?,?,?,?,?,?,?)'
@@ -91,7 +81,7 @@ def new_recipe():
         return redirect(url_for('book.recipe', rid=rid))
 
 
-def _parse_form_static(form):
+def _parse_form_static(form, author):
     name = sub(r'[^\w\-]+', ' ', form['name']).strip()
     rating = int(form['rating'])
     portions = int(form['portions'])
@@ -107,7 +97,11 @@ def _parse_form_static(form):
     instructions = form['instructions']
     tags = sub(r'[^\w\-]+', ' ', form['tags']).strip()
 
-    return name, rating, portions, ings, instructions, tags
+    keywords = ' '.join([name, tags, author, *[ing['name'] for ing in ings]])
+    keywords = ' '.join(set(split(r'\s+|-', keywords))).lower()
+    ings = dumps(ings)
+
+    return name, rating, portions, ings, instructions, tags, keywords
 
 
 def _update_image(cur, rid, files):
