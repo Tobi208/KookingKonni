@@ -5,11 +5,14 @@
     <title>{{ r.name }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
+    <script src="{{ url_for('static', filename='script/recipe.js') }}" defer></script>
 </head>
 <body>
 
 <div id="top-bar">
-    <input type="text" id="search" name="search">
+    <form action="{{ url_for('book.index') }}" method="POST">
+        <input type="text" id="search" name="search">
+    </form>
     <form action="{{ url_for('book.edit_recipe', rid=r.rid) }}" method="GET">
         <button type="submit" id="edit" name="edit">Bearbeiten</button>
     </form>

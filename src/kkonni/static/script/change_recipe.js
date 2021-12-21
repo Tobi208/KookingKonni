@@ -10,7 +10,7 @@ function add_row() {
     const unit = row.insertCell(1)
     const name = row.insertCell(2)
 
-    amount.innerHTML = `<input type="number" name="amount-${row_count - 2}" class="amount" required>`
+    amount.innerHTML = `<input type="number" name="amount-${row_count - 2}" class="amount" step="0.01" required>`
     unit.innerHTML = `<input type="text" name="unit-${row_count - 2}" class="unit" required>`
     name.innerHTML = `<input type="text" name="name-${row_count - 2}" class="name" required>`
 }
