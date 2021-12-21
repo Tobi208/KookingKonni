@@ -15,8 +15,7 @@ bp = Blueprint("book", __name__)
 @bp.route('/')
 def index():
     cur = get_db().cursor()
-    cur.execute("SELECT rid, name, image, rating, keywords FROM cookbook ORDER BY rid")
-    recipes = cur.fetchall()
+    recipes = cur.execute("SELECT rid, name, image, rating, keywords FROM cookbook ORDER BY rid").fetchall()
 
     return render_template('index.html', logged_in='uid' in session, recipes=recipes)
 
@@ -24,12 +23,11 @@ def index():
 @bp.route('/<int:rid>')
 def recipe(rid):
     cur = get_db().cursor()
-    q = "SELECT * FROM cookbook WHERE rid = ?"
-    cur.execute(q, (rid,))
-    r = cur.fetchone()
+    r = cur.execute('SELECT * FROM cookbook WHERE rid = ?', (rid,)).fetchone()
     ingredients = loads(r['ingredients'])
+    author = cur.execute('SELECT username FROM auth WHERE uid = ?', (r['author'],)).fetchone()[0]
 
-    return render_template('recipe/recipe.html', logged_in='uid' in session, r=r, ings=ingredients)
+    return render_template('recipe/recipe.html', logged_in='uid' in session, r=r, ings=ingredients, author=author)
 
 
 @bp.route('/edit/<int:rid>', methods=('GET', 'POST'))
@@ -37,29 +35,27 @@ def recipe(rid):
 def edit_recipe(rid):
     if request.method == 'GET':
         cur = get_db().cursor()
-        q = "SELECT * FROM cookbook WHERE rid = ?"
-        cur.execute(q, (rid,))
-        r = cur.fetchone()
+        r = cur.execute('SELECT * FROM cookbook WHERE rid = ?', (rid,)).fetchone()
         ingredients = loads(r['ingredients'])
 
         return render_template('recipe/edit_recipe.html', r=r, ings=ingredients)
 
     if request.method == 'POST':
-
         form = request.form
 
         name, rating, portions, ings, instructions, tags = _parse_form_static(form)
 
         cur = get_db().cursor()
-        author, image = cur.execute('SELECT author, image FROM cookbook WHERE rid = ?', (rid,)).fetchone()
+        author_uid, image = cur.execute('SELECT author, image FROM cookbook WHERE rid = ?', (rid,)).fetchone()
+        author = cur.execute('SELECT username FROM auth WHERE uid = ?', author_uid).fetchone()[0]
 
         keywords = ' '.join([name, tags, author, *[ing['name'] for ing in ings]])
         keywords = ' '.join(set(split(r'\s+|-', keywords)))
         ings = dumps(ings)
 
         q = 'UPDATE cookbook SET name = ?, portions = ?, ingredients = ?, instructions = ?, ' \
-            'image = ?, rating = ?, author = ?, tags = ?, keywords = ? WHERE rid = ?'
-        cur.execute(q, (name, portions, ings, instructions, image, rating, author, tags, keywords, rid))
+            'image = ?, rating = ?, tags = ?, keywords = ? WHERE rid = ?'
+        cur.execute(q, (name, portions, ings, instructions, image, rating, tags, keywords, rid))
         _update_image(cur, rid, request.files)
         get_db().commit()
 
@@ -73,13 +69,12 @@ def new_recipe():
         return render_template('recipe/new_recipe.html')
 
     if request.method == 'POST':
-
         form = request.form
 
         name, rating, portions, ings, instructions, tags = _parse_form_static(form)
 
         cur = get_db().cursor()
-        author = cur.execute('SELECT username FROM auth where uid = ?', (session['uid'],)).fetchone()[0]
+        author = session['uid']
 
         image = ''
         keywords = ' '.join([name, tags, author, *[ing['name'] for ing in ings]])
