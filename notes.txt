@@ -4,3 +4,5 @@ https://github.com/pallets/flask/tree/2.0.2/examples/tutorial/flaskr
 # https://flask.palletsprojects.com/en/2.0.x/patterns/appfactories/
 # https://flask-assets.readthedocs.io/en/latest/index.html
 https://stackoverflow.com/questions/20766291/flask-login-not-redirecting-to-previous-page
+
+https://petercollingridge.appspot.com/svg-optimiser

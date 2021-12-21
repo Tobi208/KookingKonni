@@ -1,6 +1,7 @@
 #top-bar {
     display: flex;
     justify-content: space-between;
+    background-color: #292929;
 }
 
 #new, #edit, #delete, #login {
@@ -11,4 +12,29 @@
 #search {
     flex-grow: 12;
     margin: 1em;
+    font-size: 1.5em;
+}
+
+#top-bar > form > button {
+    display:inline-block;
+    padding:0.35em 1.2em;
+    border:0.1em solid #FFFFFF;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-weight:300;
+    color:#FFFFFF;
+    text-align:center;
+    transition: all 0.2s;
+}
+#top-bar > form > button:hover{
+    color:#000000;
+    background-color:#FFFFFF;
+}
+@media all and (max-width:30em){
+    #top-bar > form > button {
+        display:block;
+        margin:0.4em auto;
+    }
 }
