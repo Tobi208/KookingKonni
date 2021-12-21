@@ -12,12 +12,17 @@ from kkonni.db import get_db
 bp = Blueprint("book", __name__)
 
 
-@bp.route('/')
+@bp.route('/', methods=('GET', 'POST'))
 def index():
     cur = get_db().cursor()
     recipes = cur.execute("SELECT rid, name, image, rating, keywords FROM cookbook ORDER BY rid").fetchall()
 
-    return render_template('index.html', logged_in='uid' in session, recipes=recipes)
+    if request.method == 'GET':
+        search_words = ''
+    if request.method == 'POST':
+        search_words = request.form['search']
+
+    return render_template('index.html', logged_in='uid' in session, recipes=recipes, search_words=search_words)
 
 
 @bp.route('/<int:rid>')

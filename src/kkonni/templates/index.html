@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
+    <script src="{{ url_for('static', filename='script/index.js') }}" defer></script>
 </head>
 <body>
 
 <div id="top-bar">
-    <input type="text" id="search" name="search">
+    <input type="text" id="search" name="search" value="{{ search_words }}">
     <form action="{{ url_for('book.new_recipe') }}" method="GET">
         <button type="submit" id="new" name="delete">Neu</button>
     </form>

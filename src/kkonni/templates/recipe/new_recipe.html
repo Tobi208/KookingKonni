@@ -9,7 +9,9 @@
 <body>
 
 <div id="top-bar">
-    <input type="text" id="search" name="search">
+    <form action="{{ url_for('book.index') }}" method="POST">
+        <input type="text" id="search" name="search">
+    </form>
     <form action="{{ url_for('auth.logout') }}" method="GET">
         <button type="submit" id="login" name="login">Logout</button>
     </form>
