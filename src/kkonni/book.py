@@ -13,6 +13,7 @@ bp = Blueprint("book", __name__)
 
 
 @bp.route('/', methods=('GET', 'POST'))
+@login_required
 def index():
     cur = get_db().cursor()
     recipes = cur.execute("SELECT rid, name, image, rating, keywords FROM cookbook ORDER BY rid").fetchall()
@@ -26,6 +27,7 @@ def index():
 
 
 @bp.route('/<int:rid>')
+@login_required
 def recipe(rid):
     cur = get_db().cursor()
     r = cur.execute('SELECT * FROM cookbook WHERE rid = ?', (rid,)).fetchone()
