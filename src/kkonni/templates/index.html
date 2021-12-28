@@ -1,38 +1,20 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kooking Konni</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
+{% extends 'base.html' %}
+{% block title %}Kooking Konni{% endblock %}
+{% block head %}
+    {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
     <script src="{{ url_for('static', filename='script/index.js') }}" defer></script>
-</head>
-<body>
-
-<div id="top-bar">
-    <input type="text" id="search" name="search" value="{{ search_words }}">
-    <form action="{{ url_for('book.new_recipe') }}" method="GET">
-        <button type="submit" id="new" name="delete">Neu</button>
-    </form>
-    <form action="{{ url_for('auth.logout') }}"
-    method="GET">
-        <button type="submit" id="logout" name="logout">Logout</button>
-    </form>
-</div>
-
-<ul id="recipes">
-    {% for r in recipes %}
-        <li class="recipe" data-keywords="{{ r.keywords }}">
-            <div class="header">
-                <div class="title"><a href="{{ url_for('book.recipe', rid=r.rid) }}">{{ r.name }}</a></div>
-                <div class="rating">{{ r.rating }}</div>
-            </div>
-            <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
-        </li>
-    {% endfor %}
-</ul>
-
-</body>
-</html>
+{% endblock %}
+{% block content %}
+    <ul id="recipes">
+        {% for r in recipes %}
+            <li class="recipe" data-keywords="{{ r.keywords }}">
+                <div class="header">
+                    <div class="title"><a href="{{ url_for('book.recipe', rid=r.rid) }}">{{ r.name }}</a></div>
+                    <div class="rating">{{ r.rating }}</div>
+                </div>
+                <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

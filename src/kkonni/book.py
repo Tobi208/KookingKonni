@@ -18,15 +18,15 @@ def index():
     cur = get_db().cursor()
     recipes = cur.execute("SELECT rid, name, image, rating, keywords FROM cookbook ORDER BY rid").fetchall()
 
-    if request.method == 'GET':
-        search_words = ''
-    if request.method == 'POST':
+    search_words = ''
+    if request.method == 'POST' and 'search' in request.form:
         search_words = request.form['search']
 
-    return render_template('index.html', logged_in='uid' in session, recipes=recipes, search_words=search_words)
+    h = {'new': True, 'edit': False, 'delete': False, 'search_words': search_words}
+    return render_template('index.html', logged_in='uid' in session, recipes=recipes, h=h)
 
 
-@bp.route('/<int:rid>')
+@bp.route('/<int:rid>', methods=('GET', 'POST'))
 @login_required
 def recipe(rid):
     cur = get_db().cursor()
@@ -34,18 +34,20 @@ def recipe(rid):
     ingredients = loads(r['ingredients'])
     author = cur.execute('SELECT username FROM auth WHERE uid = ?', (r['author'],)).fetchone()[0]
 
-    return render_template('recipe/recipe.html', logged_in='uid' in session, r=r, ings=ingredients, author=author)
+    h = {'new': True, 'edit': True, 'delete': True, 'search_words': ''}
+    return render_template('recipe/recipe.html', logged_in='uid' in session, r=r, ings=ingredients, author=author, h=h)
 
 
 @bp.route('/edit/<int:rid>', methods=('GET', 'POST'))
 @login_required
 def edit_recipe(rid):
-    if request.method == 'GET':
+    if request.method == 'GET' or 'edit' in request.form:
         cur = get_db().cursor()
         r = cur.execute('SELECT * FROM cookbook WHERE rid = ?', (rid,)).fetchone()
         ingredients = loads(r['ingredients'])
 
-        return render_template('recipe/edit_recipe.html', r=r, ings=ingredients)
+        h = {'new': True, 'edit': False, 'delete': True, 'search_words': ''}
+        return render_template('recipe/edit_recipe.html', r=r, ings=ingredients, h=h)
 
     if request.method == 'POST':
         form = request.form
@@ -67,8 +69,9 @@ def edit_recipe(rid):
 @bp.route('/new', methods=('GET', 'POST'))
 @login_required
 def new_recipe():
-    if request.method == 'GET':
-        return render_template('recipe/new_recipe.html')
+    if request.method == 'GET' or 'new' in request.form:
+        h = {'new': True, 'edit': False, 'delete': False, 'search_words': ''}
+        return render_template('recipe/new_recipe.html', h=h)
 
     if request.method == 'POST':
         form = request.form
@@ -120,7 +123,7 @@ def _update_image(cur, rid, files):
         cur.execute(q, (filename, rid))
 
 
-@bp.route('/delete/<int:rid>')
+@bp.route('/delete/<int:rid>', methods=('GET', 'POST'))
 @login_required
 def delete_recipe(rid):
     cur = get_db().cursor()

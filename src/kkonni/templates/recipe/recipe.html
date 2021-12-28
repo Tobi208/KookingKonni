@@ -1,77 +1,54 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ r.name }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
+{% extends 'base.html' %}
+{% block title %}{{ r.name }}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
     <script src="{{ url_for('static', filename='script/recipe.js') }}" defer></script>
-</head>
-<body>
+{% endblock %}
+{% block content %}
+    <div id="recipe">
 
-<div id="top-bar">
-    <form action="{{ url_for('book.index') }}" method="POST">
-        <input type="text" id="search" name="search">
-    </form>
-    <form action="{{ url_for('book.edit_recipe', rid=r.rid) }}" method="GET">
-        <button type="submit" id="edit" name="edit">Bearbeiten</button>
-    </form>
-    <form action="{{ url_for('book.delete_recipe', rid=r.rid) }}" method="GET" >
-        <button type="submit" id="delete" name="delete">Löschen</button>
-    </form>
-    <form action="{{ url_for('auth.logout') }}"
-    method="GET">
-        <button type="submit" id="logout" name="logout">Logout</button>
-    </form>
-</div>
+        <div id="header">
+            <div id="name">{{ r.name }}</div>
+            <div id="rating">{{ r.rating }}</div>
+        </div>
 
-<div id="recipe">
+        <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
 
-    <div id="header">
-        <div id="name">{{ r.name }}</div>
-        <div id="rating">{{ r.rating }}</div>
-    </div>
+        <table id="tb-ings">
+            <tr>
+                <th><input id="portions" type="number" autocomplete="off" value="{{ r.portions }}"></th>
+                <th colspan="2"><label class="portions-label" for="portions">Portionen</label></th>
+            </tr>
+            {% for ing in ings %}
+                <tr>
+                    <td class="td-amount">
+                        <div class="amount">{{ ing['amount'] }}</div>
+                    </td>
+                    <td class="td-unit">
+                        <div class="unit">{{ ing['unit'] }}</div>
+                    </td>
+                    <td class="td-name">
+                        <div class="name">{{ ing['name'] }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
-    <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
-
-    <table id="tb-ings">
-        <tr>
-            <th><input id="portions" type="number" autocomplete="off" value="{{ r.portions }}"></th>
-            <th colspan="2"><label class="portions-label" for="portions">Portionen</label></th>
-        </tr>
-        {% for ing in ings %}
-        <tr>
-            <td class="td-amount">
-                <div class="amount">{{ ing['amount'] }}</div>
-            </td>
-            <td class="td-unit">
-                <div class="unit">{{ ing['unit'] }}</div>
-            </td>
-            <td class="td-name">
-                <div class="name">{{ ing['name'] }}</div>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <div id="instructions">
-        {% for instruction in r.instructions.split('\n') %}
-        <p class="instruction">{{ instruction }}</p>
-        {% endfor %}
-    </div>
-
-    <div id="footer">
-        <div id="tags">
-            {% for tag in r.tags.split(' ') %}
-            <div class="tag">{{ tag }}</div>
+        <div id="instructions">
+            {% for instruction in r.instructions.split('\n') %}
+                <p class="instruction">{{ instruction }}</p>
             {% endfor %}
         </div>
 
-        <div id="author">{{ author }}</div>
+        <div id="footer">
+            <div id="tags">
+                {% for tag in r.tags.split(' ') %}
+                    <div class="tag">{{ tag }}</div>
+                {% endfor %}
+            </div>
+
+            <div id="author">{{ author }}</div>
+        </div>
     </div>
-
-</div>
-
-</body>
-</html>
+{% endblock %}

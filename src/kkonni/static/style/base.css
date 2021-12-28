@@ -2,3 +2,91 @@ body {
     width: 80%;
     margin: auto;
 }
+
+@media screen and (max-width: 920px) {
+    body {
+        width: 100%;
+    }
+}
+
+ul.topnav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0.9em;
+    background-color: #111;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    overflow: hidden;
+    gap: 0.5em;
+}
+
+/* https://tobiasahlin.com/blog/flexbox-break-to-new-row/ */
+ul.topnav li.flex-break {
+    flex-basis: 100%;
+    height: 0;
+    width: 0;
+    display: none;
+}
+
+ul.topnav li.toggle div.toggle-bar {
+    width: 1.6em;
+    height: 0.25em;
+    background-color: #ffffff;
+    margin: 0.35em 0;
+}
+
+ul.topnav li.toggle {
+    display: none;
+}
+
+ul.topnav li input {
+    padding: 0.7em 0.2em;
+    transition: 0.3s;
+    font-size: 1.3em;
+}
+
+ul.topnav li.submit input {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    border: none;
+    background: none;
+}
+
+ul.topnav li.submit input:hover {
+    color: #9b25c9;
+}
+
+ul.topnav li.search {
+    flex-grow: 1;
+}
+
+ul.topnav li.search input {
+    width: 95%;
+    padding: 0.3em 0.5em;
+}
+
+@media screen and (max-width: 920px){
+    /*ul.topnav li.submit input {*/
+    /*    display: none;*/
+    /*}*/
+
+    ul.topnav {
+        flex-wrap: wrap;
+    }
+
+    ul.topnav li.flex-break, li.submit {
+        display: none;
+    }
+
+    ul.topnav li.toggle {
+        display: block;
+        margin-left: 1em;
+        margin-right: 0.5em;
+    }
+
+    ul.topnav li.search {
+        width: 50%;
+    }
+}

@@ -61,7 +61,7 @@ def login():
     return render_template('auth/login.html')
 
 
-@bp.route('/logout')
+@bp.route('/logout', methods=('GET', 'POST'))
 def logout():
     """
     Clear the current session, including the stored user id.

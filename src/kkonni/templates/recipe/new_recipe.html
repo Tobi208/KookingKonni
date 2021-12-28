@@ -1,91 +1,78 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/top_bar.css') }}">
+{% extends 'base.html' %}
+{% block title %}Neu{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
     <script src="{{ url_for('static', filename='script/change_recipe.js') }}" defer></script>
-</head>
-<body>
+{% endblock %}
+{% block content %}
+    <div id="form-container">
+        <form id="form" autocomplete="off" method="post" enctype="multipart/form-data" action="">
 
-<div id="top-bar">
-    <form action="{{ url_for('book.index') }}" method="POST">
-        <input type="text" id="search" name="search">
-    </form>
-    <form action="{{ url_for('auth.logout') }}" method="GET">
-        <button type="submit" id="logout" name="login">Logout</button>
-    </form>
-</div>
+            <div id="header">
 
-<div id="form-container">
-    <form id="form" autocomplete="off" method="post" enctype="multipart/form-data" action="">
+                <div class="v-cont">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
 
-        <div id="header">
+                <div class="v-cont">
+                    <label for="rating">Rating</label>
+                    <input type="number" id="rating" name="rating" required>
+                </div>
 
-            <div class="v-cont">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-
-            <div class="v-cont">
-                <label for="rating">Rating</label>
-                <input type="number" id="rating" name="rating" required>
-            </div>
-
-        </div>
-
-        <div class="h-cont">
-
-            <div id="portions-cont">
-                <input type="number" id="portions" name="portions" required>
-                <label for="portions">Portions</label>
             </div>
 
             <div class="h-cont">
-                <label for="image">Image</label>
-                <input type="file" id="image" name="image" accept=".png,.jpg">
+
+                <div id="portions-cont">
+                    <input type="number" id="portions" name="portions" required>
+                    <label for="portions">Portions</label>
+                </div>
+
+                <div class="h-cont">
+                    <label for="image">Image</label>
+                    <input type="file" id="image" name="image" accept=".png,.jpg">
+                </div>
+
             </div>
 
-        </div>
+            <table id="tb-ings">
+                <tr id="tb-ings-header">
+                    <th>Amount</th>
+                    <th>Unit</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><input type="number" name="amount-0" class="amount" step="0.01" required></td>
+                    <td><input type="text" name="unit-0" class="unit" required></td>
+                    <td><input type="text" name="name-0" class="name" required></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" id="add-row">+</button>
+                        <button type="button" id="remove-row">-</button>
+                    </td>
+                </tr>
+            </table>
 
-        <table id="tb-ings">
-            <tr id="tb-ings-header">
-                <th>Amount</th>
-                <th>Unit</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td><input type="number" name="amount-0" class="amount" step="0.01" required></td>
-                <td><input type="text" name="unit-0" class="unit" required></td>
-                <td><input type="text" name="name-0" class="name" required></td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="button" id="add-row">+</button>
-                    <button type="button" id="remove-row">-</button>
-                </td>
-            </tr>
-        </table>
+            <div class="v-cont">
+                <label for="instructions">Instructions</label>
+                <textarea id="instructions" name="instructions" required></textarea>
+            </div>
 
-        <div class="v-cont">
-            <label for="instructions">Instructions</label>
-            <textarea id="instructions" name="instructions" required></textarea>
-        </div>
+            <div class="v-cont">
+                <label for="tags">Tags</label>
+                <input type="text" id="tags" name="tags" required>
+            </div>
 
-        <div class="v-cont">
-            <label for="tags">Tags</label>
-            <input type="text" id="tags" name="tags" required>
-        </div>
+            <div id="buttons">
+                <button type="submit" name="confirm">Speichern</button>
+                <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.index') }}')">
+                    Abbrechen
+                </button>
+            </div>
 
-        <div id="buttons">
-            <button type="submit" name="confirm">Speichern</button>
-            <button type="button" id="cancel" onClick="window.location.replace('{{ url_for('book.index') }}')">Abbrechen</button>
-        </div>
-
-    </form>
-</div>
-
-</body>
-</html>
+        </form>
+    </div>
+{% endblock %}

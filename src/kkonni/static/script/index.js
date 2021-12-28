@@ -2,7 +2,7 @@ const search_bar = document.getElementById("search")
 const recipes = document.getElementsByClassName("recipe")
 
 function filter_recipes() {
-    const words = search_bar.value.toLowerCase().split(" ")
+    const words = search_bar.value.toLowerCase().trim().split(/\s+/)
     if (words.length === 0) {
         for (const recipe of recipes) { recipe.style.display = "block" }
     } else {
