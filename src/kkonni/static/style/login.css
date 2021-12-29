@@ -1,0 +1,47 @@
+.content {
+    width: 20%;
+    margin: 4em auto auto;
+    padding: 2em;
+    border: 0.1em solid #adadad;
+    border-radius: 0.5em;
+}
+
+label {
+    font-size: 1.25em;
+}
+
+input {
+    width: 100%;
+    padding: 0.4em 0.6em;
+    margin: 0.8em 0;
+    display: inline-block;
+    border: 0.1em solid #ccc;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    font-size: 1.2em;
+}
+
+button {
+    background-color: rgba(95, 4, 170, 0.85);
+    color: white;
+    padding: 0.4em 0.6em;
+    margin: 0.8em 0;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.25em;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 820px) {
+    .content {
+        width: 80%;
+        margin: auto;
+        border: none;
+    }
+
+}
