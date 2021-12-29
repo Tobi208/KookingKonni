@@ -83,8 +83,7 @@ def edit_recipe(rid):
 
         cur = get_db().cursor()
         uid, image = cur.execute('SELECT uid, image FROM recipe WHERE rid = ?', (rid,)).fetchone()
-        author = _get_username(uid)
-        name, portions, ings, instructions, tags, keywords = _parse_form_static(form, author)
+        name, portions, ings, instructions, tags, keywords = _parse_form_static(form, uid)
 
         q = 'UPDATE recipe SET name = ?, portions = ?, ingredients = ?, instructions = ?, ' \
             'image = ?, tags = ?, keywords = ? WHERE rid = ?'
@@ -113,7 +112,7 @@ def new_recipe():
         time = int(datetime.now().timestamp())
 
         q = 'INSERT INTO recipe (name, portions, ingredients, instructions, image, uid, tags, keywords, rating, time)' \
-            'VALUES (?,?,?,?,?,?,?,?,?,?,?)'
+            'VALUES (?,?,?,?,?,?,?,?,?,?)'
         cur.execute(q, (name, portions, ings, instructions, image, uid, tags, keywords, rating, time))
         rid = cur.lastrowid
         _update_image(cur, rid, request.files)
@@ -147,7 +146,7 @@ def delete_comment(rid, cid):
     return redirect(url_for('book.recipe', rid=rid))
 
 
-def _parse_form_static(form, author):
+def _parse_form_static(form, uid):
     name = sub(r'[^\w\-]+', ' ', form['name']).strip()
     portions = int(form['portions'])
     ings = []
@@ -161,6 +160,7 @@ def _parse_form_static(form, author):
         i += 1
     instructions = form['instructions']
     tags = sub(r'[^\w\-]+', ' ', form['tags']).strip()
+    author = _get_username(uid)
 
     keywords = ' '.join([name, tags, author, *[ing['name'] for ing in ings]])
     keywords = ' '.join(set(split(r'\s+|-', keywords))).lower()
