@@ -7,31 +7,22 @@
 {% endblock %}
 {% block content %}
     <div id="form-container">
-        <form id="form" autocomplete="off" method="post" enctype="multipart/form-data" action="">
+        <form autocomplete="off" method="post" enctype="multipart/form-data">
 
-            <div id="header">
-
-                <div class="v-cont">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-
-                <div class="v-cont">
-                    <label for="rating">Rating</label>
-                    <input type="number" id="rating" name="rating" required>
-                </div>
-
+            <div class="v-cont">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
             </div>
 
             <div class="h-cont">
 
                 <div id="portions-cont">
                     <input type="number" id="portions" name="portions" required>
-                    <label for="portions">Portions</label>
+                    <label for="portions">Portionen</label>
                 </div>
 
                 <div class="h-cont">
-                    <label for="image">Image</label>
+                    <label for="image">Bild</label>
                     <input type="file" id="image" name="image" accept=".png,.jpg">
                 </div>
 
@@ -57,7 +48,7 @@
             </table>
 
             <div class="v-cont">
-                <label for="instructions">Instructions</label>
+                <label for="instructions">Zubereitung</label>
                 <textarea id="instructions" name="instructions" required></textarea>
             </div>
 

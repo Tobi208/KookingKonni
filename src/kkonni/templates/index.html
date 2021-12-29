@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
     <ul id="recipes">
-        {% for r in recipes %}
+        {% for r in rs %}
             <li class="recipe" data-keywords="{{ r.keywords }}">
                 <div class="header">
                     <div class="title"><a href="{{ url_for('book.recipe', rid=r.rid) }}">{{ r.name }}</a></div>

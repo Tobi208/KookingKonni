@@ -11,6 +11,7 @@
         <div id="header">
             <div id="name">{{ r.name }}</div>
             <div id="rating">{{ r.rating }}</div>
+            <div id="time">{{ r.time }}</div>
         </div>
 
         <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
@@ -20,7 +21,7 @@
                 <th><input id="portions" type="number" autocomplete="off" value="{{ r.portions }}"></th>
                 <th colspan="2"><label class="portions-label" for="portions">Portionen</label></th>
             </tr>
-            {% for ing in ings %}
+            {% for ing in r.ingredients %}
                 <tr>
                     <td class="td-amount">
                         <div class="amount">{{ ing['amount'] }}</div>
@@ -48,7 +49,37 @@
                 {% endfor %}
             </div>
 
-            <div id="author">{{ author }}</div>
+            <div id="author">{{ r.author }}</div>
         </div>
     </div>
+
+    <div id="rating-form">
+    <form method="post">
+        <label for="user-rating">Bewertung</label>
+        <input id="user-rating" type="number" min="1" max="10" name="user-rating" value="{{ u.rating }}" required>
+        <button type="submit">Speichern</button>
+    </form>
+    </div>
+
+    <div id="comment-form">
+    <form method="post">
+        <label for="user-comment">Neuen Kommentar verfassen</label>
+        <textarea id="user-comment" name="user-comment" required></textarea>
+        <button type="submit">Speichern</button>
+    </form>
+    </div>
+
+    <div id="comment-section">
+        {% for c in cs %}
+            <div class="author">{{ c.author }}</div>
+            <div class="time">{{ c.time }}</div>
+            <div class="comment">{{ c.comment }}</div>
+            {% if c.uid in u.comments %}
+                <form method="POST" action="{{ url_for('book.delete_comment', rid=r.rid, cid=c.cid) }}">
+                    <button type="submit">Löschen</button>
+                </form>
+            {% endif %}
+        {% endfor %}
+    </div>
+
 {% endblock %}

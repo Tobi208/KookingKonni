@@ -41,12 +41,15 @@ def init_create_user_command(username, password):
     Create new user.
     """
     db = get_db()
-    hashed_password = generate_password_hash(password)
-    q = "INSERT INTO auth (username, password) VALUES (?, ?)"
-    db.execute(q, (username, hashed_password))
-    db.commit()
-
-    click.echo(f'Registered new user: {username}')
+    users = [u[0] for u in db.execute("SELECT username FROM user").fetchall()]
+    if username in users:
+        click.echo(f'Username already exists.')
+    else:
+        hashed_password = generate_password_hash(password)
+        q = "INSERT INTO user (username, password) VALUES (?, ?)"
+        db.execute(q, (username, hashed_password))
+        db.commit()
+        click.echo(f'Registered new user: {username}')
 
 
 @click.command('delete-user')
@@ -54,14 +57,27 @@ def init_create_user_command(username, password):
 @with_appcontext
 def init_delete_user_command(username):
     """
-    Create new user.
+    Delete a user.
     """
     db = get_db()
-    q = "DELETE FROM auth WHERE username = ?"
-    db.execute(q, (username,))
-    db.commit()
+    users = [u[0] for u in db.execute("SELECT username FROM user").fetchall()]
+    if username not in users:
+        click.echo(f'User not found: {username}')
+    else:
+        uid = db.execute("SELECT uid FROM user WHERE username = ?", (username,)).fetchone()[0]
+        db.execute("DELETE FROM user WHERE username = ?", (username,))
+        db.execute("DELETE FROM comment WHERE uid = ?", (uid,))
+        rids = db.execute("SELECT rid FROM rating where uid = ?", (uid,)).fetchall()
+        db.execute("DELETE FROM rating WHERE uid = ?", (uid,))
+        db.commit()
 
-    click.echo(f'Deleted user: {username}')
+        for rid in [rid[0] for rid in rids]:
+            ratings = db.execute("SELECT rating FROM rating WHERE rid = ?", (rid,)).fetchall()
+            new_rating = round(sum(r[0] for r in ratings) / len(ratings))
+            db.execute("UPDATE recipe SET rating = ? WHERE rid = ?", (new_rating, rid))
+        db.commit()
+
+        click.echo(f'Deleted user: {username}')
 
 
 def init_app(app):
