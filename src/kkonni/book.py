@@ -59,7 +59,7 @@ def recipe(rid):
     cs = [dict(c) | {'time': datetime.fromtimestamp(c['time']).strftime(current_app.config['DATE_FORMAT']),
                      'author': _get_username(c['uid'])}
           for c in sorted(cs, key=lambda c: c['time'] * -1)]
-    u = {'comments': [c['cid'] for c in cs if c['uid'] == session['uid']]}
+    u = {'uid': session['uid']}
     u_rating = cur.execute('SELECT rating FROM rating WHERE rid = ? AND uid = ?', (rid, session['uid'])).fetchall()
     u['rating'] = u_rating[0][0] if len(u_rating) > 0 else 0
 
@@ -70,7 +70,7 @@ def recipe(rid):
 @bp.route('/edit/<int:rid>', methods=('GET', 'POST'))
 @login_required
 def edit_recipe(rid):
-    if request.method == 'GET' or 'edit' in request.form:
+    if request.method == 'GET':
         cur = get_db().cursor()
         r = cur.execute('SELECT * FROM recipe WHERE rid = ?', (rid,)).fetchone()
         r = dict(r) | {'ingredients': loads(r['ingredients'])}
@@ -97,7 +97,7 @@ def edit_recipe(rid):
 @bp.route('/new', methods=('GET', 'POST'))
 @login_required
 def new_recipe():
-    if request.method == 'GET' or 'new' in request.form:
+    if request.method == 'GET':
         h = {'new': True, 'edit': False, 'delete': False, 'search_words': ''}
         return render_template('recipe/new_recipe.html', h=h)
 
@@ -121,7 +121,7 @@ def new_recipe():
         return redirect(url_for('book.recipe', rid=rid))
 
 
-@bp.route('/delete/<int:rid>', methods=['POST'])
+@bp.route('/delete/<int:rid>')
 @login_required
 def delete_recipe(rid):
     cur = get_db().cursor()
@@ -136,7 +136,7 @@ def delete_recipe(rid):
     return redirect(url_for('book.index'))
 
 
-@bp.route('/delete/<int:rid>/c/<int:cid>', methods=['POST'])
+@bp.route('/delete/<int:rid>/c/<int:cid>')
 @login_required
 def delete_comment(rid, cid):
     cur = get_db().cursor()

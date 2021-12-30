@@ -74,10 +74,8 @@
             <div class="author">{{ c.author }}</div>
             <div class="time">{{ c.time }}</div>
             <div class="comment">{{ c.comment }}</div>
-            {% if c.uid in u.comments %}
-                <form method="POST" action="{{ url_for('book.delete_comment', rid=r.rid, cid=c.cid) }}">
-                    <button type="submit">Löschen</button>
-                </form>
+            {% if c.uid == u.uid %}
+                <a href="{{ url_for('book.delete_comment', rid=r.rid, cid=c.cid) }}">Löschen</a>
             {% endif %}
         {% endfor %}
     </div>

@@ -45,6 +45,10 @@ img {
         flex-direction: column;
     }
 
+    img {
+        max-width: 100%;
+    }
+
     #recipes li.recipe {
         margin: 1em auto 1em auto;
     }

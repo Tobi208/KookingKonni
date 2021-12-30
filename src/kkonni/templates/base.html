@@ -25,39 +25,29 @@
         </li>
         <li class="flex-break"></li>
         <li class="submit">
-            <form action="{{ url_for('book.index') }}" method="POST">
-                <input type="submit" name="home" value="Home">
-            </form>
+            <a href="{{ url_for('book.index') }}">Home</a>
         </li>
         {% if h.new %}
             <li class="flex-break"></li>
             <li class="submit">
-                <form action="{{ url_for('book.new_recipe') }}" method="POST">
-                    <input type="submit" name="new" value="Neu">
-                </form>
+                <a href="{{ url_for('book.new_recipe') }}">Neu</a>
             </li>
         {% endif %}
         {% if h.edit %}
             <li class="flex-break"></li>
             <li class="submit">
-                <form action="{{ url_for('book.edit_recipe', rid=r.rid) }}" method="POST">
-                    <input type="submit" name="edit" value="Bearbeiten">
-                </form>
+                <a href="{{ url_for('book.edit_recipe', rid=r.rid) }}">Bearbeiten</a>
             </li>
         {% endif %}
         {% if h.delete %}
             <li class="flex-break"></li>
             <li class="submit">
-                <form action="{{ url_for('book.delete_recipe', rid=r.rid) }}" method="POST">
-                    <input type="submit" name="delete" value="Löschen">
-                </form>
+                <a href="{{ url_for('book.delete_recipe', rid=r.rid) }}">Löschen</a>
             </li>
         {% endif %}
         <li class="flex-break"></li>
         <li class="submit">
-            <form action="{{ url_for('auth.logout') }}" method="POST">
-                <input type="submit" name="logout" value="Logout">
-            </form>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
         </li>
     </ul>
 
