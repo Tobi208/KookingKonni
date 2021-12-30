@@ -66,7 +66,7 @@
             <div id="buttons">
                 <button type="submit" name="confirm">Speichern</button>
                 <button type="button" id="cancel"
-                        onClick="window.location.replace('{{ url_for('book.recipe', rid=r.rid) }}')">Abbrechen
+                        onClick="location.href='{{ url_for('book.recipe', rid=r.rid) }}';">Abbrechen
                 </button>
             </div>
         </form>

@@ -6,6 +6,7 @@ body {
 @media screen and (max-width: 920px) {
     body {
         width: 100%;
+        margin: 0;
     }
 }
 
@@ -68,9 +69,6 @@ ul.topnav li.search input {
 }
 
 @media screen and (max-width: 920px){
-    /*ul.topnav li.submit input {*/
-    /*    display: none;*/
-    /*}*/
 
     ul.topnav {
         flex-wrap: wrap;

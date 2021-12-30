@@ -1,0 +1,20 @@
+.stars {
+    display: flex;
+}
+
+.star polygon {
+    fill: #d8d8d8;
+
+}
+
+.stars[data-stars="0"] {
+    display: none;
+}
+
+.stars[data-stars="1"] .star:nth-child(1) polygon,
+.stars[data-stars="2"] .star:nth-child(-n+2) polygon,
+.stars[data-stars="3"] .star:nth-child(-n+3) polygon,
+.stars[data-stars="4"] .star:nth-child(-n+4) polygon,
+.stars[data-stars="5"] .star:nth-child(-n+5) polygon {
+    fill: #ffd055;
+}

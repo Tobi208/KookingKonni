@@ -2,9 +2,50 @@
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
-    align-content: stretch;
+    align-items: flex-start;
+    padding: 1em;
 }
 
-#recipes > li > .header {
+img {
+    max-width: 400px;
+    height: auto;
+}
+
+#recipes li.recipe {
+    margin: 2em;
+    max-width: 400px;
+    min-width: 20%;
+    box-shadow: 0 0.2em 0.4em 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 0.3em;
+    width: 100%;
+}
+
+#recipes li.recipe:hover {
+    cursor: pointer;
+    box-shadow: 0 0.4em 0.8em 0 rgba(0, 0, 0, 0.2);
+}
+
+#recipes li .image {
+    border-radius: 0.3em 0.3em 0 0;
+}
+
+#recipes li .footer {
     display: flex;
+    padding: 1.5em;
+    justify-content: space-between;
+}
+
+#recipes li .title {
+    font-size: larger;
+}
+
+@media screen and (max-width: 920px) {
+    #recipes {
+        flex-direction: column;
+    }
+
+    #recipes li.recipe {
+        margin: 1em auto 1em auto;
+    }
 }

@@ -8,12 +8,15 @@
 {% block content %}
     <ul id="recipes">
         {% for r in rs %}
-            <li class="recipe" data-keywords="{{ r.keywords }}">
-                <div class="header">
-                    <div class="title"><a href="{{ url_for('book.recipe', rid=r.rid) }}">{{ r.name }}</a></div>
-                    <div class="rating">{{ r.rating }}</div>
+            <li class="recipe" data-keywords="{{ r.keywords }}"
+                onClick="location.href='{{ url_for('book.recipe', rid=r.rid) }}';">
+                {% if r.image|length %}
+                    <img class="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
+                {% endif %}
+                <div class="footer">
+                    <div class="title">{{ r.name }}</div>
+                    {% include 'svg/stars.html' %}
                 </div>
-                <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
             </li>
         {% endfor %}
     </ul>
