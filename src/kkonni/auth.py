@@ -29,6 +29,24 @@ def login_required(view):
     return wrapped_view
 
 
+def recipe_author(view):
+    """
+    View decorator that ensures that the request is from the recipe's author.
+    """
+
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        rid = kwargs['rid']
+        cur = get_db().cursor()
+        r_uid = cur.execute('SELECT uid FROM recipe WHERE rid = ?', (rid,)).fetchone()[0]
+        if 'uid' not in session or r_uid != session['uid']:
+            return redirect(url_for('book.recipe', rid=rid))
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     """

@@ -7,7 +7,7 @@ from re import sub, split
 from flask import Blueprint, render_template, session, redirect, url_for, request, current_app
 from werkzeug.utils import secure_filename
 
-from kkonni.auth import login_required
+from kkonni.auth import login_required, recipe_author
 from kkonni.db import get_db
 
 bp = Blueprint("book", __name__)
@@ -23,8 +23,7 @@ def index():
     if request.method == 'POST' and 'search' in request.form:
         search_words = request.form['search']
 
-    h = {'new': True, 'edit': False, 'delete': False, 'search_words': search_words}
-    return render_template('index.html', h=h, rs=rs)
+    return render_template('index.html', h={'search_words': search_words}, rs=rs)
 
 
 @bp.route('/<int:rid>', methods=('GET', 'POST'))
@@ -63,20 +62,20 @@ def recipe(rid):
     u_rating = cur.execute('SELECT rating FROM rating WHERE rid = ? AND uid = ?', (rid, session['uid'])).fetchall()
     u['rating'] = u_rating[0][0] if len(u_rating) > 0 else 0
 
-    h = {'new': True, 'edit': True, 'delete': True, 'search_words': ''}
-    return render_template('recipe/recipe.html', h=h, u=u, r=r, cs=cs)
+    return render_template('recipe/recipe.html', h={'search_words': ''}, u=u, r=r, cs=cs)
 
 
 @bp.route('/edit/<int:rid>', methods=('GET', 'POST'))
 @login_required
+@recipe_author
 def edit_recipe(rid):
+
     if request.method == 'GET':
         cur = get_db().cursor()
         r = cur.execute('SELECT * FROM recipe WHERE rid = ?', (rid,)).fetchone()
         r = dict(r) | {'ingredients': loads(r['ingredients'])}
 
-        h = {'new': True, 'edit': False, 'delete': True, 'search_words': ''}
-        return render_template('recipe/edit_recipe.html', h=h, r=r)
+        return render_template('recipe/edit_recipe.html', h={'search_words': ''}, r=r)
 
     if request.method == 'POST':
         form = request.form
@@ -98,8 +97,7 @@ def edit_recipe(rid):
 @login_required
 def new_recipe():
     if request.method == 'GET':
-        h = {'new': True, 'edit': False, 'delete': False, 'search_words': ''}
-        return render_template('recipe/new_recipe.html', h=h)
+        return render_template('recipe/new_recipe.html', h={'search_words': ''})
 
     if request.method == 'POST':
         form = request.form
@@ -123,6 +121,7 @@ def new_recipe():
 
 @bp.route('/delete/<int:rid>')
 @login_required
+@recipe_author
 def delete_recipe(rid):
     cur = get_db().cursor()
     image = cur.execute('SELECT image FROM recipe WHERE rid = ?', (rid,)).fetchone()[0]

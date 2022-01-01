@@ -27,24 +27,10 @@
         <li class="submit">
             <a href="{{ url_for('book.index') }}">Home</a>
         </li>
-        {% if h.new %}
-            <li class="flex-break"></li>
-            <li class="submit">
-                <a href="{{ url_for('book.new_recipe') }}">Neu</a>
-            </li>
-        {% endif %}
-        {% if h.edit %}
-            <li class="flex-break"></li>
-            <li class="submit">
-                <a href="{{ url_for('book.edit_recipe', rid=r.rid) }}">Bearbeiten</a>
-            </li>
-        {% endif %}
-        {% if h.delete %}
-            <li class="flex-break"></li>
-            <li class="submit">
-                <a href="{{ url_for('book.delete_recipe', rid=r.rid) }}">Löschen</a>
-            </li>
-        {% endif %}
+        <li class="flex-break"></li>
+        <li class="submit">
+            <a href="{{ url_for('book.new_recipe') }}">Neu</a>
+        </li>
         <li class="flex-break"></li>
         <li class="submit">
             <a href="{{ url_for('auth.logout') }}">Logout</a>
