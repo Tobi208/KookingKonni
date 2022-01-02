@@ -1,6 +1,6 @@
 #content {
     width: 80%;
-    margin: auto auto 5em auto;
+    margin: auto;
 }
 
 #change-form .pair {
@@ -126,9 +126,11 @@
     padding: 1.25em;
     display: flex;
     justify-content: center;
-
     border: 0.01em dashed #626262;
     border-radius: 0.5em;
+}
+#change-form #file-input-decoy:hover {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 800px) {

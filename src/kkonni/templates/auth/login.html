@@ -7,15 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/login.css') }}">
 </head>
 <body>
-<div class="content">
-    <form method="post">
-        <label for="username">Benutzername</label>
-        <input type="text" name="username" id="username" required>
-        <label for="password">Passwort</label>
-        <input type="password" name="password" id="password" required>
-        <button type="submit">Login</button>
-    </form>
-</div>
+<form method="post">
+    <label for="username">Benutzername</label>
+    <input type="text" name="username" id="username" required>
+    <label for="password">Passwort</label>
+    <input type="password" name="password" id="password" required>
+    <button type="submit">Login</button>
+</form>
 
 </body>
 </html>
