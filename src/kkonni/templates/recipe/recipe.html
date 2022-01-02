@@ -2,7 +2,7 @@
 {% block title %}{{ r.name }}{% endblock %}
 {% block head %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/recipe.css') }}">
     <script src="{{ url_for('static', filename='script/recipe.js') }}" defer></script>
 {% endblock %}
 {% block content %}
@@ -10,19 +10,30 @@
 
         <div id="header">
             <div id="name">{{ r.name }}</div>
-            <div id="rating">{{ r.rating }}</div>
-            <div id="time">{{ r.time }}</div>
-            <a href="{{ url_for('book.delete_recipe', rid=r.rid) }}">Löschen</a>
-            <a href="{{ url_for('book.edit_recipe', rid=r.rid) }}">Bearbeiten</a>
+            <div id="rating">
+                {% include 'svg/stars.html' %}
+            </div>
         </div>
 
-        <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
+        {% if r.uid == u.uid %}
+            <div id="modify">
+                <a href="{{ url_for('book.edit_recipe', rid=r.rid) }}">{% include 'svg/edit.html' %}</a>
+                <a href="{{ url_for('book.delete_recipe', rid=r.rid) }}">{% include 'svg/delete.html' %}</a>
+            </div>
+        {% endif %}
+
+        {% if r.image|length %}
+            <img id="image" src="{{ url_for('static', filename='image/' + r.image) }}" alt="{{ r.name }} image">
+        {% endif %}
+
+        <div id="portions-flex">
+            <div id="portions-container">
+                <input id="portions" type="number" autocomplete="off" value="{{ r.portions }}">
+                <label for="portions">Portionen</label>
+            </div>
+        </div>
 
         <table id="tb-ings">
-            <tr>
-                <th><input id="portions" type="number" autocomplete="off" value="{{ r.portions }}"></th>
-                <th colspan="2"><label class="portions-label" for="portions">Portionen</label></th>
-            </tr>
             {% for ing in r.ingredients %}
                 <tr>
                     <td class="td-amount">
@@ -51,35 +62,39 @@
                 {% endfor %}
             </div>
 
-            <div id="author">{{ r.author }}</div>
+            <div id="author">{{ r.author }}, {{ r.time }}</div>
         </div>
     </div>
 
-    <div id="rating-form">
-    <form method="post">
-        <label for="user-rating">Bewertung</label>
-        <input id="user-rating" type="number" min="1" max="10" name="user-rating" value="{{ u.rating }}" required>
-        <button type="submit">Speichern</button>
-    </form>
-    </div>
+    <div id="comments">
 
-    <div id="comment-form">
-    <form method="post">
-        <label for="user-comment">Neuen Kommentar verfassen</label>
-        <textarea id="user-comment" name="user-comment" required></textarea>
-        <button type="submit">Speichern</button>
-    </form>
-    </div>
+        <div id="comment-title">Kommentare</div>
 
-    <div id="comment-section">
-        {% for c in cs %}
-            <div class="author">{{ c.author }}</div>
-            <div class="time">{{ c.time }}</div>
-            <div class="comment">{{ c.comment }}</div>
-            {% if c.uid == u.uid %}
-                <a href="{{ url_for('book.delete_comment', rid=r.rid, cid=c.cid) }}">Löschen</a>
-            {% endif %}
-        {% endfor %}
+        <div id="comment-form">
+            {# set data-stars and .post in JS #}
+            <div id="user-rating" data-stars="{{ u.rating }}">{% include 'svg/stars.html' %}</div>
+            <form method="post">
+                <textarea id="user-comment" name="user-comment" required></textarea>
+                <div id="user-comment-buttons">
+                    <button type="reset">Abbrechen</button>
+                    <button type="submit">Speichern</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="comment-section">
+            {% for c in cs %}
+                <div class="comment">
+                    {% if c.uid == u.uid %}
+                        <div class="modify">
+                            <a href="{{ url_for('book.delete_comment', rid=r.rid, cid=c.cid) }}">{% include 'svg/delete.html' %}</a>
+                        </div>
+                    {% endif %}
+                    <div class="comment-content">{{ c.comment }}</div>
+                    <div class="author">{{ c.author }}, {{ c.time }}</div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}

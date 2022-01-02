@@ -147,7 +147,7 @@ def delete_comment(rid, cid):
 
 def _parse_form_static(form, uid):
     name = sub(r'[^\w\-]+', ' ', form['name']).strip()
-    portions = int(form['portions'])
+    portions = int(float(form['portions']))
     ings = []
     i = 0
     while f'amount-{i}' in form:

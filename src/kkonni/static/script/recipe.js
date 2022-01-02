@@ -16,3 +16,9 @@ function adjust_amounts() {
 
 portions.addEventListener("change", adjust_amounts)
 adjust_amounts()
+
+
+const user_rating = document.querySelector('#comment-form #user-rating')
+const stars = document.querySelector('#comment-form .stars')
+stars.dataset.stars = user_rating.dataset.stars
+stars.classList.add('post')

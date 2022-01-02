@@ -1,4 +1,234 @@
-body {
-    width: 80%;
+#content {
+    width: 70%;
     margin: auto;
+}
+
+#recipe #header {
+    margin: 2em 0 2em 0;
+    padding: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#recipe #name {
+    font-size: 2.25em;
+}
+
+#recipe #modify {
+    float: right;
+}
+
+#recipe #modify a {
+    padding: 0.5em;
+}
+
+#recipe #modify svg {
+    width: 1.75em;
+    height: auto;
+}
+
+#recipe #header svg {
+    width: 2.25em;
+    height: auto;
+}
+
+#recipe #image {
+    display: block;
+    border: 0.01em solid #ddd;
+    border-radius: 0.5em;
+    margin: 3em auto 3em auto;
+    padding: 0.5em;
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
+}
+
+#portions-flex {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+#portions-container {
+    border: 0.01em solid #ddd;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
+}
+
+#recipe #portions {
+    padding: 0.7em;
+    font-size: 1.15em;
+    text-align: center;
+    max-width: 5em;
+    border: none;
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+}
+
+#recipe #portions-flex label {
+    padding: 0.7em;
+    font-size: 1.25em;
+    border: none;
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+}
+
+#recipe table {
+    margin: 1em auto 2em auto;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
+}
+
+#recipe table, #recipe td {
+    padding: 0.5em;
+    font-size: 1.05em;
+    border-spacing: 0;
+}
+
+#recipe td.td-amount {
+    text-align: right;
+    min-width: 5em;
+}
+
+#recipe tr:nth-child(odd){
+    background-color: #f2f2f2;
+}
+
+#recipe #instructions {
+    margin: auto;
+    padding: 0.5em;
+    font-size: 1.15em;
+    border: 0.01em solid #ddd;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
+}
+
+#recipe #footer {
+    margin: 2em auto 2em auto;
+    display: flex;
+    justify-content: space-between;
+        flex-direction: column;
+
+}
+
+#recipe #footer #author {
+    border: none;
+    box-shadow: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.5em;
+    padding: 0.5em;
+}
+
+#recipe #footer #tags {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+#recipe #footer .tag {
+    margin: 0.5em;
+    padding: 0.5em;
+    border: 0.01em solid #ddd;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
+}
+
+#comments {
+    margin: 2em auto 5em auto;
+}
+
+#comments #comment-title {
+    font-size: 1.75em;
+    margin: 1em auto 1em auto;
+}
+
+#comments #comment-form #user-rating {
+    display: flex;
+    padding: 0.5em;
+}
+
+#comments #comment-form #user-rating svg {
+    width: 1.5em
+}
+
+#comments #comment-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+#comments #comment-form textarea {
+    width: 100%;
+    min-height: 8em;
+    font-size: 1.1em;
+    padding: 1em;
+}
+
+#comments #comment-form #user-comment-buttons {
+    padding: 1em 0 1em 0;
+    float: right;
+}
+
+#comments #comment-form button {
+    padding: 0.25em;
+    font-size: 1em;
+}
+
+#comments .comment {
+    width: 100%;
+    margin: 2em auto 2em auto;
+    padding: 0.5em;
+    border: 0.01em solid #ddd;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
+}
+
+#comments .comment .modify {
+    padding: 0.5em;
+    float: right;
+}
+
+#comments .comment .comment-content {
+    padding: 0.5em;
+    font-size: 1.15em;
+}
+
+#comments .comment .author {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media screen and (max-width: 900px) {
+
+    #content {
+        width: 100%;
+    }
+
+    #recipe #header {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    #recipe #header #name {
+        font-size: 2em;
+    }
+
+    #recipe #header svg {
+        width: 1.75em;
+    }
+
+    #recipe #image {
+        max-width: 85%;
+    }
+
+    #recipe #instructions,
+    #recipe #footer,
+    #comments #comment-form,
+    #comments #comment-form textarea,
+    #comments .comment {
+        max-width: 90%;
+    }
+
 }
