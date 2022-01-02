@@ -21,13 +21,18 @@
     justify-content: flex-end;
 }
 
-#recipe #modify a {
+#recipe #modify a,
+#recipe #modify > div {
     padding: 0.5em;
 }
 
 #recipe #modify svg {
     width: 1.75em;
     height: auto;
+}
+
+#recipe #modify svg:hover {
+    cursor: pointer;
 }
 
 #recipe #header svg {
@@ -192,6 +197,10 @@
 #comments .comment .modify {
     padding: 0.5em;
     float: right;
+}
+
+#comments .comment .modify:hover {
+    cursor: pointer;
 }
 
 #comments .comment .comment-content {

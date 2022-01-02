@@ -7,6 +7,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+from flask import jsonify
 from werkzeug.security import check_password_hash
 
 from kkonni.db import get_db
@@ -41,6 +42,61 @@ def recipe_author(view):
         r_uid = cur.execute('SELECT uid FROM recipe WHERE rid = ?', (rid,)).fetchone()[0]
         if 'uid' not in session or r_uid != session['uid']:
             return redirect(url_for('book.recipe', rid=rid))
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
+def api_login_required(view):
+    """
+    View decorator that ensures that the request is from authorized user.
+    """
+
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if 'uid' not in session:
+            return jsonify({'text': 'Unknown user'}), 401
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
+def api_recipe_author(view):
+    """
+    View decorator that ensures that the request is from the recipe's author.
+    """
+
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if 'uid' not in session:
+            return jsonify({'text': 'Unknown user'}), 401
+        rid = kwargs['rid']
+        cur = get_db().cursor()
+        r_uid = cur.execute('SELECT uid FROM recipe WHERE rid = ?', (rid,)).fetchone()[0]
+        if r_uid != session['uid']:
+            return jsonify({'text': f'User must be author'}), 403
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
+def api_comment_author(view):
+    """
+    View decorator that ensures that the request is from the comment's author.
+    """
+
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if 'uid' not in session:
+            return jsonify({'text': 'Unknown user'}), 401
+        cid = kwargs['cid']
+        cur = get_db().cursor()
+        c_uid = cur.execute('SELECT uid FROM comment WHERE cid = ?', (cid,)).fetchone()[0]
+        if c_uid != session['uid']:
+            return jsonify({'text': f'User must be author'}), 403
 
         return view(**kwargs)
 

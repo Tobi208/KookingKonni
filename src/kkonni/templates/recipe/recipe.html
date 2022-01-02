@@ -18,7 +18,7 @@
         {% if r.uid == u.uid %}
             <div id="modify">
                 <a href="{{ url_for('book.edit_recipe', rid=r.rid) }}">{% include 'svg/edit.html' %}</a>
-                <a href="{{ url_for('book.delete_recipe', rid=r.rid) }}">{% include 'svg/delete.html' %}</a>
+                <div onclick="delete_recipe({{ r.rid }})">{% include 'svg/delete.html' %}</div>
             </div>
         {% endif %}
 
@@ -72,22 +72,25 @@
 
         <div id="comment-form">
             {# set data-stars and .post in JS #}
-            <div id="user-rating" data-stars="{{ u.rating }}">{% include 'svg/stars.html' %}</div>
-            <form method="post">
-                <textarea id="user-comment" name="user-comment" required></textarea>
-                <div id="user-comment-buttons">
-                    <button type="reset">Abbrechen</button>
-                    <button type="submit">Speichern</button>
-                </div>
-            </form>
+            <div id="user-rating" data-stars="{{ u.rating }}" data-rid="{{ r.rid }}">{% include 'svg/stars.html' %}</div>
+            <textarea id="user-comment"></textarea>
+            <div id="user-comment-buttons">
+                <button type="button" id="user-comment-cancel">Abbrechen</button>
+                <button type="button" id="user-comment-save"
+                        onclick="add_comment({{ r.rid }})">
+                    Speichern
+                </button>
+            </div>
         </div>
 
         <div id="comment-section">
             {% for c in cs %}
-                <div class="comment">
+                <div class="comment" id="comment-{{ c.cid }}">
                     {% if c.uid == u.uid %}
                         <div class="modify">
-                            <a href="{{ url_for('book.delete_comment', rid=r.rid, cid=c.cid) }}">{% include 'svg/delete.html' %}</a>
+                            <div onclick="delete_comment({{ c.cid }})">
+                                {% include 'svg/delete.html' %}
+                            </div>
                         </div>
                     {% endif %}
                     <div class="comment-content">{{ c.comment }}</div>

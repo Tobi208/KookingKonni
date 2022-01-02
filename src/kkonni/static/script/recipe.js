@@ -24,6 +24,11 @@ adjust_amounts()
 
 
 const user_rating = document.querySelector('#comment-form #user-rating')
-const stars = document.querySelector('#comment-form .stars')
-stars.dataset.stars = user_rating.dataset.stars
-stars.classList.add('post')
+const post_stars = document.querySelector('#comment-form .stars')
+post_stars.dataset.stars = user_rating.dataset.stars
+post_stars.classList.add('post')
+
+for (const post_star of post_stars.querySelectorAll('.star')) {
+    post_star.addEventListener('click', () => rate_recipe(post_star.dataset.star))
+}
+

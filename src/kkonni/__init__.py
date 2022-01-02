@@ -16,9 +16,10 @@ def create_app():
     db.init_app(app)
 
     # apply the blueprints to the app
-    from kkonni import auth, book
+    from kkonni import auth, book, api
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(book.bp)
+    app.register_blueprint(api.bp)
 
     return app
