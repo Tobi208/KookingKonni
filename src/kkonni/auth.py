@@ -1,7 +1,6 @@
 import functools
 
 from flask import Blueprint
-from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -118,9 +117,9 @@ def login():
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect username.'
+            return render_template('auth/login.html', error="Benutzer existiert nicht")
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            return render_template('auth/login.html', error="Falsches Passwort")
 
         if error is None:
             # store the user id in a new session and return to the index
@@ -129,8 +128,6 @@ def login():
             next_url = request.args.get('next')
             next_url = next_url if next_url else url_for('book.index')
             return redirect(next_url)
-
-        flash(error)
 
     return render_template('auth/login.html')
 
