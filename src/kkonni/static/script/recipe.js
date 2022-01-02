@@ -1,3 +1,7 @@
+function round_two(x) {
+    return Math.round(x * 100) / 100
+}
+
 const portions = document.getElementById("portions")
 const amounts = document.getElementsByClassName("amount")
 
@@ -10,11 +14,12 @@ for (let i = 0; i < amounts.length; i++) {
 function adjust_amounts() {
     const ratio = portions.value / default_portions
     for (let i = 0; i < amounts.length; i++) {
-        amounts[i].innerHTML = (Math.round(default_amounts[i] * ratio * 100) / 100).toString()
+        amounts[i].innerHTML = round_two(default_amounts[i] * ratio).toString()
     }
 }
 
 portions.addEventListener("change", adjust_amounts)
+portions.value = round_two(default_portions)
 adjust_amounts()
 
 
