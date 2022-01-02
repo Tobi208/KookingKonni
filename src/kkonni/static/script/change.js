@@ -38,3 +38,15 @@ btn_add_row.addEventListener("click", add_row)
 for (const minus of btn_del_rows) {
     minus.addEventListener("click", () => {del_row(minus)})
 }
+
+// https://stackoverflow.com/a/24015367
+const image_upload = document.querySelector('input#image')
+const decoy_upload = document.querySelector('#file-input-decoy')
+image_upload.addEventListener('change', () => {
+    if(image_upload.files[0].size > 209715){
+       alert('Bitte vorest nur Dateien bis 200 kb hochladen.\nLösung kommt bald.')
+       image_upload.value = ''
+    } else {
+        decoy_upload.innerHTML = image_upload.value.replace(/^.*[\\\/]/, '')
+    }
+})
