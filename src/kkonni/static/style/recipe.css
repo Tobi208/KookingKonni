@@ -168,7 +168,9 @@
 
 #comments #comment-form #user-comment-buttons {
     padding: 1em 0 1em 0;
-    float: right;
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 1em;
 }
 
 #comments #comment-form button {

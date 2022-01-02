@@ -2,81 +2,67 @@
 {% block title %}{{ r.name }}{% endblock %}
 {% block head %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
-    <script src="{{ url_for('static', filename='script/change_recipe.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/change.css') }}">
+    <script src="{{ url_for('static', filename='script/change.js') }}" defer></script>
 {% endblock %}
 {% block content %}
-    <div id="form-container">
+    <div id="change-form">
         <form autocomplete="off" method="post" enctype="multipart/form-data">
 
-            <div class="v-cont">
+            <div class="pair">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" value="{{ r.name }}" required>
             </div>
 
-            <div class="h-cont">
+            <div class="pair">
+                <label for="image">Bild</label>
+                <label for="image" id="file-input-decoy">Bild auswählen</label>
+                <input type="file" id="image" name="image" accept=".png,.jpg">
+            </div>
 
-                <div id="portions-cont">
-                    <input type="number" id="portions" name="portions" value="{{ r.portions }}" step="1" required>
-                    <label for="portions">Portionen</label>
-                </div>
-
-                <div class="h-cont">
-                    <label for="image">Image</label>
-                    <input type="file" id="image" name="image" accept=".png,.jpg">
-                </div>
-
+            <div class="pair">
+                <label for="portions">Portionen</label>
+                <input type="number" id="portions" name="portions" value="{{ r.portions }}" step="1" required>
             </div>
 
             <table id="tb-ings">
                 <tr id="tb-ings-header">
-                    <th>Menge</th>
-                    <th>Einheit</th>
-                    <th>Beschreibung</th>
+                    <th class="col-minus"></th>
+                    <th class="col-amount">Menge</th>
+                    <th class="col-unit">Einheit</th>
+                    <th class="col-name">Beschreibung</th>
                 </tr>
                 {% for ing in r.ingredients %}
                     <tr>
-                        <td><input type="number" name="amount-{{ loop.index0 }}" class="amount"
+                        <td class="col-minus"><div class="minus">{% include'svg/minus.html' %}</div></td>
+                        <td class="col-amount"><input type="number" name="amount-{{ loop.index0 }}" class="amount"
                                    value="{{ ing['amount'] }}"
                                    step="0.01" required></td>
-                        <td><input type="text" name="unit-{{ loop.index0 }}" class="unit" value="{{ ing['unit'] }}"
+                        <td class="col-unit"><input type="text" name="unit-{{ loop.index0 }}" class="unit" value="{{ ing['unit'] }}"
                                    required></td>
-                        <td><input type="text" name="name-{{ loop.index0 }}" class="name" value="{{ ing['name'] }}"
+                        <td class="col-name"><input type="text" name="name-{{ loop.index0 }}" class="name" value="{{ ing['name'] }}"
                                    required></td>
                     </tr>
                 {% endfor %}
-                <tr>
-                    <td>
-                        <button type="button" id="add-row">+</button>
-                        <button type="button" id="remove-row">-</button>
-                    </td>
-                </tr>
             </table>
+            <div class="plus">{% include'svg/plus.html' %}</div>
 
-            <div class="v-cont">
+            <div class="pair">
                 <label for="instructions">Zubereitung</label>
                 <textarea id="instructions" name="instructions" required>{{ r.instructions }}</textarea>
             </div>
 
-            <div class="v-cont">
+            <div class="pair">
                 <label for="tags">Tags</label>
                 <input type="text" id="tags" name="tags" value="{{ r.tags }}" required>
             </div>
 
             <div id="buttons">
-                <button type="submit" name="confirm">Speichern</button>
                 <button type="button" id="cancel"
                         onClick="location.href='{{ url_for('book.recipe', rid=r.rid) }}';">Abbrechen
                 </button>
+                <button type="submit" name="confirm">Speichern</button>
             </div>
         </form>
-    </div>
-
-    <div id="comment-section">
-        {% for c in cs %}
-            <div class="author">{{ c.author }}</div>
-            <div class="time">{{ c.time }}</div>
-            <div class="comment">{{ c.comment }}</div>
-        {% endfor %}
     </div>
 {% endblock %}
