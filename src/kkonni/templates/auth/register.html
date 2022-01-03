@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kooking Konni</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/login.css') }}">
+</head>
+<body>
+<form method="post">
+    <div id="title">Erstanmeldung</div>
+    <label for="username">Benutzername</label>
+    <input type="text" name="username" id="username" required>
+    <label for="password">Einmalpasswort</label>
+    <input type="password" name="password" id="password" required>
+    <label for="password1">Neues Passwort</label>
+    <input type="password" name="password1" id="password1" required>
+    <label for="password2">Passwort wiederholen</label>
+    <input type="password" name="password2" id="password2" required>
+    <button type="submit">Signup</button>
+</form>
+{% if error is defined %}
+    <div class="error">{{ error }}</div>
+{% endif %}
+</body>
+</html>

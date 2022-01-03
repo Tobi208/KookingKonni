@@ -1,6 +1,7 @@
 from json import loads
 
 from flask import Blueprint, render_template, session, redirect, url_for, request, escape
+from flask import send_from_directory, current_app
 
 from kkonni import util
 from kkonni.auth import login_required, recipe_author
@@ -138,3 +139,11 @@ def new_recipe():
         util.update_image(rid, request.files, image)
 
         return redirect(url_for('book.recipe', rid=rid))
+
+
+@bp.route('/favicon.ico')
+def favicon():
+    """
+    Route favicon.
+    """
+    return send_from_directory(current_app.config['IMAGE_DIR'], 'favicon.png')

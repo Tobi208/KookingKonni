@@ -36,7 +36,10 @@ def close_db(e=None):
 
 @click.command('create-database')
 @with_appcontext
-def init_create_database():
+def init_create_database_command():
+    """
+    Initialize new database for the application.
+    """
     db = get_db()
     db.execute('''CREATE TABLE "comment" (
                 "cid"	INTEGER,
@@ -71,6 +74,7 @@ def init_create_database():
                 "uid"	INTEGER,
                 "username"	TEXT NOT NULL UNIQUE,
                 "password"	TEXT NOT NULL,
+                "registered"	INTEGER NOT NULL,
                 PRIMARY KEY("uid")
             )''')
     db.commit()
@@ -95,8 +99,8 @@ def init_create_user_command(username, password):
 
     # generate a hashed password and register user
     hashed_password = generate_password_hash(password)
-    q = 'INSERT INTO user (username, password) VALUES (?, ?)'
-    db.execute(q, (username, hashed_password))
+    q = 'INSERT INTO user (username, password, registered) VALUES (?, ?, ?)'
+    db.execute(q, (username, hashed_password, 0))
     db.commit()
 
     click.echo(f'Registered new user: {username}')
@@ -154,12 +158,61 @@ def init_delete_user_command(username):
     click.echo(f'Deleted user: {username}')
 
 
+@click.command('reset-password')
+@click.option('--username', prompt='Username')
+@click.option('--password', prompt='Password')
+@with_appcontext
+def init_reset_password_command(username, password):
+    """
+    Reset the registration of user with a new one-time password.
+    """
+
+    # check if user even exists
+    db = get_db()
+    users = [u[0] for u in db.execute('SELECT username FROM user').fetchall()]
+    if username not in users:
+        click.echo(f'User not found: {username}')
+        return
+
+    # reset registration with new one-time password
+    q = 'UPDATE user SET password = ?, registered = ? WHERE username = ?'
+    db.execute(q, (generate_password_hash(password), 0, username))
+    db.commit()
+
+    click.echo('User password reset')
+
+
+@click.command('change-username')
+@click.option('--username', prompt='Username')
+@click.option('--new-username', prompt='New username')
+@with_appcontext
+def init_change_username_command(username, new_username):
+    """
+    Change the user's username to a new username.
+    """
+
+    # check if user even exists
+    db = get_db()
+    users = [u[0] for u in db.execute('SELECT username FROM user').fetchall()]
+    if username not in users:
+        click.echo(f'User not found: {username}')
+        return
+
+    # write changes to database
+    db.execute('UPDATE user SET username = ? WHERE username = ?', (new_username, username))
+    db.commit()
+
+    click.echo(f'Username {username} changed to {new_username}')
+
+
 def init_app(app):
     """
     Register database functions with the Flask app.
     This is called by the application factory.
     """
     app.teardown_appcontext(close_db)
-    app.cli.add_command(init_create_database)
+    app.cli.add_command(init_create_database_command)
     app.cli.add_command(init_create_user_command)
     app.cli.add_command(init_delete_user_command)
+    app.cli.add_command(init_reset_password_command)
+    app.cli.add_command(init_change_username_command)

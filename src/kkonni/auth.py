@@ -1,7 +1,7 @@
 import functools
 
 from flask import Blueprint, jsonify, redirect, render_template, request, session, url_for, escape
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from kkonni.db import get_db
 
@@ -100,7 +100,7 @@ def api_comment_author(view):
     return wrapped_view
 
 
-@bp.route('/login', methods=('GET', 'POST'))
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
     """
     Log in a registered user by adding the user id to the session.
@@ -119,25 +119,71 @@ def login():
 
         # give hints on wrong login
         if user is None:
-            return render_template('auth/login.html', error="Benutzer existiert nicht")
-        elif not check_password_hash(user['password'], password):
-            return render_template('auth/login.html', error="Falsches Passwort")
-        else:
-            # store the user id in a new session
-            # and redirect if applicable
-            session.clear()
-            session['uid'] = user['uid']
-            next_url = request.args.get('next')
-            next_url = next_url if next_url else url_for('book.index')
-            return redirect(next_url)
+            return render_template('auth/login.html', error='Benutzer existiert nicht')
+        # redirect to registration if user has not been confirmed
+        if user['registered'] == 0:
+            return redirect(url_for('auth.register'))
+        if not check_password_hash(user['password'], password):
+            return render_template('auth/login.html', error='Falsches Passwort')
+
+        # store the user id in a new session
+        # and redirect if applicable
+        session.clear()
+        session['uid'] = user['uid']
+        next_url = request.args.get('next')
+        next_url = next_url if next_url else url_for('book.index')
+        return redirect(next_url)
 
     return render_template('auth/login.html')
 
 
-@bp.route('/logout', methods=('GET', 'POST'))
+@bp.route('/logout', methods=['GET', 'POST'])
 def logout():
     """
     Clear the current session, including the stored user id.
     """
     session.clear()
     return redirect(url_for('auth.login'))
+
+
+@bp.route('/register', methods=['GET', 'POST'])
+def register():
+    """
+    Confirm user registration on first login by changing the password.
+    """
+
+    if request.method == 'POST':
+
+        # gather data from form
+        username = escape(request.form['username'])
+        password = request.form['password']
+        password1 = request.form['password1']
+        password2 = request.form['password2']
+
+        # attempt to find user in database
+        cur = get_db().cursor()
+        user = cur.execute('SELECT * FROM user WHERE username = ?', (username,)).fetchone()
+
+        # give hints on wrong registration
+        if user is None:
+            return render_template('auth/register.html', error='Benutzer existiert nicht')
+        if user['registered'] == 1:
+            return render_template('auth/register.html', error='Benutzer bereits registriert')
+        if not check_password_hash(user['password'], password):
+            return render_template('auth/register.html', error='Falsches Einmalpasswort')
+        if password1 != password2:
+            return render_template('auth/register.html', error='Neues Passwort stimmt nicht überein')
+        if password == password1:
+            return render_template('auth/register.html', error='Neues Passwort muss anders sein')
+
+        # register user in database
+        q = 'UPDATE user SET password = ?, registered = ? WHERE username = ?'
+        cur.execute(q, (generate_password_hash(password1), 1, username))
+        get_db().commit()
+
+        # log user in and redirect to index
+        session.clear()
+        session['uid'] = user['uid']
+        return redirect(url_for('book.index'))
+
+    return render_template('auth/register.html')
