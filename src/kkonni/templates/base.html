@@ -12,30 +12,35 @@
     {% endblock %}
 </head>
 <body>
-
     <ul class="topnav">
+
         <li class="search">
             <form action="{{ url_for('book.index') }}" method="POST">
-                <input type="text" id="search" name="search" value="{{ h.search_words }}">
+                <input type="text" id="search" name="search" value="{{ search_words or '' }}">
             </form>
         </li>
+
         <li class="toggle">
             <div class="toggle-bar"></div>
             <div class="toggle-bar"></div>
             <div class="toggle-bar"></div>
         </li>
+
         <li class="flex-break"></li>
         <li class="submit">
             <a href="{{ url_for('book.index') }}">Home</a>
         </li>
+
         <li class="flex-break"></li>
         <li class="submit">
             <a href="{{ url_for('book.new_recipe') }}">Neu</a>
         </li>
+
         <li class="flex-break"></li>
         <li class="submit">
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         </li>
+
     </ul>
 
     <div id="content">{% block content %}{% endblock %}</div>

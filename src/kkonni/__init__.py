@@ -1,6 +1,6 @@
 from os.path import dirname, realpath, join
 
-from flask import Flask, session
+from flask import Flask
 
 
 def create_app():

@@ -6,11 +6,6 @@
     padding: 1em;
 }
 
-img {
-    max-width: 400px;
-    height: auto;
-}
-
 #recipes li.recipe {
     margin: 2em;
     max-width: 400px;
@@ -24,6 +19,11 @@ img {
 #recipes li.recipe:hover {
     cursor: pointer;
     box-shadow: 0 0.4em 0.8em 0 rgba(0, 0, 0, 0.2);
+}
+
+img {
+    max-width: 400px;
+    height: auto;
 }
 
 #recipes li .image {
@@ -41,6 +41,7 @@ img {
 }
 
 @media screen and (max-width: 920px) {
+
     #recipes {
         flex-direction: column;
     }
@@ -52,4 +53,5 @@ img {
     #recipes li.recipe {
         margin: 1em auto 1em auto;
     }
+
 }

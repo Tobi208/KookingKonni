@@ -10,7 +10,7 @@ body {
 ul.topnav {
     list-style-type: none;
     margin: 0;
-    padding: 0.9em;
+    padding: 1.1em;
     background-color: #111;
     display: flex;
     justify-content: space-around;
@@ -24,6 +24,15 @@ ul.topnav li.flex-break {
     height: 0;
     width: 0;
     display: none;
+}
+
+ul.topnav li.search {
+    flex-grow: 1;
+}
+
+ul.topnav li.search input {
+    width: 95%;
+    padding: 0.3em 0.5em;
 }
 
 ul.topnav li.toggle div.toggle-bar {
@@ -54,14 +63,6 @@ ul.topnav li.submit a:hover {
     color: #9b25c9;
 }
 
-ul.topnav li.search {
-    flex-grow: 1;
-}
-
-ul.topnav li.search input {
-    width: 95%;
-    padding: 0.3em 0.5em;
-}
 
 @media screen and (max-width: 920px){
 
@@ -82,4 +83,5 @@ ul.topnav li.search input {
     ul.topnav li.search {
         width: 50%;
     }
+
 }

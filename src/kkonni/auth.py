@@ -1,17 +1,15 @@
 import functools
 
-from flask import Blueprint
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import session
-from flask import url_for
-from flask import jsonify
+from flask import Blueprint, jsonify, redirect, render_template, request, session, url_for, escape
 from werkzeug.security import check_password_hash
 
 from kkonni.db import get_db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
+
+"""
+Handles all authentication processes.
+"""
 
 
 def login_required(view):
@@ -107,22 +105,26 @@ def login():
     """
     Log in a registered user by adding the user id to the session.
     """
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        db = get_db()
-        error = None
-        user = db.execute(
-            "SELECT * FROM user WHERE username = ?", (username,)
-        ).fetchone()
 
+    # match form info with registered database info
+    if request.method == 'POST':
+
+        # gather data from form
+        username = escape(request.form['username'])
+        password = request.form['password']
+
+        # attempt to find user in database
+        cur = get_db().cursor()
+        user = cur.execute('SELECT * FROM user WHERE username = ?', (username,)).fetchone()
+
+        # give hints on wrong login
         if user is None:
             return render_template('auth/login.html', error="Benutzer existiert nicht")
         elif not check_password_hash(user['password'], password):
             return render_template('auth/login.html', error="Falsches Passwort")
-
-        if error is None:
-            # store the user id in a new session and return to the index
+        else:
+            # store the user id in a new session
+            # and redirect if applicable
             session.clear()
             session['uid'] = user['uid']
             next_url = request.args.get('next')

@@ -26,6 +26,22 @@
 
 }
 
+/* Circumvent file input styling */
+#change-form input[type="file"] {
+    display: none;
+}
+#change-form #file-input-decoy {
+    font-size: 1.25em;
+    padding: 1.25em;
+    display: flex;
+    justify-content: center;
+    border: 0.01em dashed #626262;
+    border-radius: 0.5em;
+}
+#change-form #file-input-decoy:hover {
+    cursor: pointer;
+}
+
 /* Hide arrows on number input */
 #change-form input::-webkit-outer-spin-button,
 #change-form input::-webkit-inner-spin-button {
@@ -62,21 +78,14 @@
     stroke-width: 0.35em;
 }
 
-#change-form .plus {
-    display: flex;
-    justify-content: center;
-}
-
 #change-form .minus svg:hover,
 #change-form .plus svg:hover {
     cursor: pointer;
 }
 
-#change-form #buttons {
-    padding: 1em;
+#change-form .plus {
     display: flex;
-    justify-content: flex-end;
-    column-gap: 1em;
+    justify-content: center;
 }
 
 #change-form #tb-ings {
@@ -112,28 +121,21 @@
     width: 90%;
 }
 
+#change-form #buttons {
+    padding: 1em;
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 1em;
+}
+
 #change-form #buttons button {
     padding: 0.25em;
     font-size: 1em;
 }
 
-/* Circumvent file input styling */
-#change-form input[type="file"] {
-    display: none;
-}
-#change-form #file-input-decoy {
-    font-size: 1.25em;
-    padding: 1.25em;
-    display: flex;
-    justify-content: center;
-    border: 0.01em dashed #626262;
-    border-radius: 0.5em;
-}
-#change-form #file-input-decoy:hover {
-    cursor: pointer;
-}
 
 @media screen and (max-width: 800px) {
+
     #content {
         width: 100%;
         margin: 0 0 2em 0;

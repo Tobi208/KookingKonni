@@ -1,4 +1,11 @@
-// https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+/**
+ * Handles Fetch API requests to backend and updates page dynamically.
+ */
+
+/**
+ * Make POST request with JSON data and return response as JSON
+ * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+ */
 async function post_request(url = '', data = {}) {
     const response = await fetch(url, {
         method: 'POST',
@@ -15,6 +22,9 @@ async function post_request(url = '', data = {}) {
     return response.json();
 }
 
+/**
+ * Make API call to delete a comment and remove it from view.
+ */
 function delete_comment(cid) {
     const comment = document.querySelector(`#comment-${cid}`)
     post_request(`/api/delete/c/${cid}`, {'cid': cid})
@@ -22,14 +32,21 @@ function delete_comment(cid) {
         .catch(err => console.log(err))
 }
 
+/**
+ * Make API call to add a comment and add it to view.
+ */
 function add_comment(rid) {
     const user_comment = document.querySelector('#user-comment')
+    // prevent redundant request
     if (user_comment.value === '') return
     post_request(`/api/add/c/${rid}`, {'comment': user_comment.value})
         .then(data => {
+            // create new comment
             const comment = document.createElement('div')
             comment.classList.add('comment')
             comment.id = `comment-${data['cid']}`
+            // hack in the html content of the comment
+            // should be using a template engine if possible
             comment.innerHTML =
                 `<div class="modify">
                     <div onclick="delete_comment(${data['cid']})">
@@ -38,30 +55,42 @@ function add_comment(rid) {
                  </div>
                  <div class="comment-content">${data['comment']}</div>
                  <div class="author">${data['author']}, ${data['time']}</div>`
+            // add to view
             const comments = document.querySelector('#comment-section')
             comments.insertBefore(comment, comments.firstChild)
         })
         .catch(err => console.error(err))
+    // reset user comment input
     user_comment.value = ''
 }
 
+/**
+ * Make API call to rate a recipe or change an already existing one.
+ * Update the view for both the total rating and the user rating.
+ */
 function rate_recipe(rating) {
     const user_rating = document.querySelector('#user-rating')
     const rid = user_rating.dataset.rid
+    // prevent redundant request
     const old_rating = user_rating.dataset.stars
     if (rating === old_rating) return
     post_request(`/api/rate/r/${rid}`, {'rating': rating})
         .then(data => {
+            // gather data and elements
             const new_rating = data['rating']
             const recipe_stars = document.querySelector('#rating .stars')
-            recipe_stars.dataset.stars = new_rating
             const post_stars = document.querySelector('.stars.post')
+            // update data sets, css will handle everything else
+            recipe_stars.dataset.stars = new_rating
             post_stars.dataset.stars = rating
             user_rating.dataset.stars = rating
         })
         .catch(err => console.error(err))
 }
 
+/**
+ * Make API call to delete a recipe and redirect to homepage.
+ */
 function delete_recipe(rid) {
     post_request(`/api/delete/r/${rid}`)
         .then(() => window.location.href = '/')

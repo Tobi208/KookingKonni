@@ -61,9 +61,9 @@
                     <div class="tag">{{ tag }}</div>
                 {% endfor %}
             </div>
-
             <div id="author">{{ r.author }}, {{ r.time }}</div>
         </div>
+
     </div>
 
     <div id="comments">
@@ -72,7 +72,8 @@
 
         <div id="comment-form">
             {# set data-stars and .post in JS #}
-            <div id="user-rating" data-stars="{{ u.rating }}" data-rid="{{ r.rid }}">{% include 'svg/stars.html' %}</div>
+            <div id="user-rating" data-stars="{{ u.rating }}"
+                 data-rid="{{ r.rid }}">{% include 'svg/stars.html' %}</div>
             <textarea id="user-comment"></textarea>
             <div id="user-comment-buttons">
                 <button type="button" id="user-comment-cancel">Abbrechen</button>
@@ -98,6 +99,6 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
 
+    </div>
 {% endblock %}

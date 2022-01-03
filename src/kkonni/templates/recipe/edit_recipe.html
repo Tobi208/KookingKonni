@@ -34,14 +34,18 @@
                 </tr>
                 {% for ing in r.ingredients %}
                     <tr>
-                        <td class="col-minus"><div class="minus">{% include'svg/minus.html' %}</div></td>
+                        <td class="col-minus">
+                            <div class="minus">{% include'svg/minus.html' %}</div>
+                        </td>
                         <td class="col-amount"><input type="number" name="amount-{{ loop.index0 }}" class="amount"
-                                   value="{{ ing['amount'] }}"
-                                   step="0.01" required></td>
-                        <td class="col-unit"><input type="text" name="unit-{{ loop.index0 }}" class="unit" value="{{ ing['unit'] }}"
-                                   required></td>
-                        <td class="col-name"><input type="text" name="name-{{ loop.index0 }}" class="name" value="{{ ing['name'] }}"
-                                   required></td>
+                                                      value="{{ ing['amount'] }}"
+                                                      step="0.01" required></td>
+                        <td class="col-unit"><input type="text" name="unit-{{ loop.index0 }}" class="unit"
+                                                    value="{{ ing['unit'] }}"
+                                                    required></td>
+                        <td class="col-name"><input type="text" name="name-{{ loop.index0 }}" class="name"
+                                                    value="{{ ing['name'] }}"
+                                                    required></td>
                     </tr>
                 {% endfor %}
             </table>

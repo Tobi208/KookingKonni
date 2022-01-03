@@ -32,12 +32,15 @@
                     <th class="col-unit">Einheit</th>
                     <th class="col-name">Beschreibung</th>
                 </tr>
-                    <tr>
-                        <td class="col-minus"><div class="minus">{% include'svg/minus.html' %}</div></td>
-                        <td class="col-amount"><input type="number" name="amount-0" class="amount" step="0.01" required></td>
-                        <td class="col-unit"><input type="text" name="unit-0" class="unit" required></td>
-                        <td class="col-name"><input type="text" name="name-0" class="name" required></td>
-                    </tr>
+                <tr>
+                    <td class="col-minus">
+                        <div class="minus">{% include'svg/minus.html' %}</div>
+                    </td>
+                    <td class="col-amount"><input type="number" name="amount-0" class="amount" step="0.01" required>
+                    </td>
+                    <td class="col-unit"><input type="text" name="unit-0" class="unit" required></td>
+                    <td class="col-name"><input type="text" name="name-0" class="name" required></td>
+                </tr>
             </table>
             <div class="plus">{% include'svg/plus.html' %}</div>
 
