@@ -26,10 +26,12 @@ async function post_request(url = '', data = {}) {
  * Make API call to delete a comment and remove it from view.
  */
 function delete_comment(cid) {
-    const comment = document.querySelector(`#comment-${cid}`)
-    post_request(`/api/delete/c/${cid}`, {'cid': cid})
-        .then(() => comment.remove())
-        .catch(err => console.log(err))
+    if (window.confirm("Kommentar löschen?")) {
+        const comment = document.querySelector(`#comment-${cid}`)
+        post_request(`/api/delete/c/${cid}`, {'cid': cid})
+            .then(() => comment.remove())
+            .catch(err => console.log(err))
+    }
 }
 
 /**
@@ -92,7 +94,9 @@ function rate_recipe(rating) {
  * Make API call to delete a recipe and redirect to homepage.
  */
 function delete_recipe(rid) {
-    post_request(`/api/delete/r/${rid}`)
-        .then(() => window.location.href = '/')
-        .catch(err => console.error(err))
+    if (window.confirm("Rezept löschen?")) {
+        post_request(`/api/delete/r/${rid}`)
+            .then(() => window.location.href = '/')
+            .catch(err => console.error(err))
+    }
 }
