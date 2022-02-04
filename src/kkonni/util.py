@@ -88,7 +88,7 @@ def parse_form(form, uid):
     i = 0
     while f'amount-{i}' in form:
         ings.append({
-            'amount': float(escape(form[f'amount-{i}'])),
+            'amount': escape(form[f'amount-{i}']),
             'unit': escape(form[f'unit-{i}']).strip(),
             'name': escape(form[f'name-{i}']).strip(),
         })

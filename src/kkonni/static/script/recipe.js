@@ -13,7 +13,8 @@ for (let i = 0; i < amounts.length; i++) {
 function adjust_amounts() {
     const ratio = portions.value / default_portions
     for (let i = 0; i < amounts.length; i++) {
-        amounts[i].innerHTML = round_two(default_amounts[i] * ratio).toString()
+        if (!isNaN(default_amounts[i]))
+            amounts[i].innerHTML = round_two(default_amounts[i] * ratio).toString()
     }
 }
 

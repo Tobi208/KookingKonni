@@ -74,8 +74,6 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 ## Future
 
-* Add choice to leave fields in the recipe creation blank 
-
 * Better styling!
 
 * Show number of ratings, show ratings in half-steps (currently average full-steps)
@@ -89,3 +87,22 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 * Support different database technologies (currently only sqlite) 
 
 * Support multiple languages (currently only German)
+
+zutatentabelle überarbeiten:
+	- zeilen zwischen drin (must have!)
+	- mehrere tabellen mit überschriften
+	- neue zeile per tastendruck (enter) (wäre sehr schön)
+
+home page sortieren
+
+Custom input form errors!
+
+
+## Changelog
+
+### v0.2.0
+
+* Fixed language
+
+* Ingredients Table:
+  * Added option to leave cells blank

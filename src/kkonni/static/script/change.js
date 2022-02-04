@@ -47,11 +47,11 @@ plus.addEventListener('click', () => {
     minus.appendChild(og_minus.cloneNode(true))
     minus.classList.add('col-minus')
     minus.querySelector('svg').addEventListener('click', () => del_row(minus))
-    amount.innerHTML = `<input type="number" name="amount-${row_count - 1}" class="amount" step="0.01" required>`
+    amount.innerHTML = `<input type="number" name="amount-${row_count - 1}" class="amount" step="0.01" >`
     amount.classList.add('col-amount')
-    unit.innerHTML = `<input type="text" name="unit-${row_count - 1}" class="unit" required>`
+    unit.innerHTML = `<input type="text" name="unit-${row_count - 1}" class="unit" >`
     unit.classList.add('col-unit')
-    name.innerHTML = `<input type="text" name="name-${row_count - 1}" class="name" required>`
+    name.innerHTML = `<input type="text" name="name-${row_count - 1}" class="name" >`
     name.classList.add('col-name')
 })
 

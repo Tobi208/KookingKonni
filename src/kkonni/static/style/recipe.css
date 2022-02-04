@@ -98,6 +98,10 @@
     min-width: 5em;
 }
 
+#recipe tr {
+    min-height: 10em;
+}
+
 #recipe tr:nth-child(odd){
     background-color: #f2f2f2;
 }
