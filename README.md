@@ -88,13 +88,11 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 * Support multiple languages (currently only German)
 
-zutatentabelle überarbeiten:
-	- mehrere tabellen mit überschriften
-	- neue zeile per tastendruck (enter) (wäre sehr schön)
+* Append row on enter if in last cell
 
-home page sortieren
+* Custom input form errors
 
-Custom input form errors!
+* Add Favicon _everywhere_ (currently only `/favicon.ico`)
 
 
 ## Changelog
@@ -105,3 +103,4 @@ Custom input form errors!
 * Ingredients Table:
   * Added option to leave cells blank
   * Added option to insert rows anywhere
+  * Now supports multiple ingredients tables

@@ -25,24 +25,51 @@
                 <input type="number" id="portions" name="portions" step="1" required>
             </div>
 
-            <table id="tb-ings">
-                <tr id="tb-ings-header">
-                    <th class="col-ctrl"></th>
-                    <th class="col-amount">Menge</th>
-                    <th class="col-unit">Einheit</th>
-                    <th class="col-name">Beschreibung</th>
-                </tr>
-                <tr>
-                    <td class="col-ctrl">
-                        <div class="minus">{% include'svg/minus.html' %}</div>
-                        <div class="plus">{% include'svg/plus.html' %}</div>
-                    </td>
-                    <td class="col-amount"><input type="number" name="amount-0" class="amount" step="0.01">
-                    </td>
-                    <td class="col-unit"><input type="text" name="unit-0" class="unit"></td>
-                    <td class="col-name"><input type="text" name="name-0" class="name"></td>
-                </tr>
-            </table>
+            <div id="all-tb-ings">
+                    <div class="tb-ings-cont">
+
+                        <div class="pair">
+                            <label for="tb-ings-title-0">Tabellentitel</label>
+                            <input id="tb-ings-title-0" type="text" name="tb-ings-title-0">
+                        </div>
+
+                        <table class="tb-ings" data-index="0">
+                            <tr class="tb-ings-header">
+                                <th class="col-ctrl"></th>
+                                <th class="col-amount">Menge</th>
+                                <th class="col-unit">Einheit</th>
+                                <th class="col-name">Beschreibung</th>
+                            </tr>
+                                <tr>
+                                    <td class="col-ctrl">
+                                        <div class="minus">{% include'svg/minus.html' %}</div>
+                                        <div class="plus">{% include'svg/plus.html' %}</div>
+                                    </td>
+                                    <td class="col-amount">
+                                        <input type="number"
+                                               name="amount-0-0"
+                                               class="amount" step="0.01">
+                                    </td>
+                                    <td class="col-unit">
+                                        <input type="text"
+                                               name="unit-0-0"
+                                               class="unit">
+                                    </td>
+                                    <td class="col-name">
+                                        <input type="text"
+                                               name="name-0-0"
+                                               class="name">
+                                    </td>
+                                </tr>
+                        </table>
+
+                        <div class="tb-controls">
+                            <div class="tb-minus">{% include'svg/minus.html' %}</div>
+                            <div class="tb-plus">{% include'svg/plus.html' %}</div>
+                        </div>
+
+                    </div>
+            </div>
 
             <div class="pair">
                 <label for="instructions">Zubereitung</label>

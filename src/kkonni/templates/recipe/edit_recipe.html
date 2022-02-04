@@ -25,28 +25,62 @@
                 <input type="number" id="portions" name="portions" value="{{ r.portions }}" step="1" required>
             </div>
 
-            <table id="tb-ings">
-                <tr id="tb-ings-header">
-                    <th class="col-ctrl"></th>
-                    <th class="col-amount">Menge</th>
-                    <th class="col-unit">Einheit</th>
-                    <th class="col-name">Beschreibung</th>
-                </tr>
-                {% for ing in r.ingredients %}
-                    <tr>
-                        <td class="col-ctrl">
-                            <div class="minus">{% include'svg/minus.html' %}</div>
-                            <div class="plus">{% include'svg/plus.html' %}</div>
-                        </td>
-                        <td class="col-amount"><input type="number" name="amount-{{ loop.index0 }}" class="amount"
-                                                      value="{{ ing['amount'] }}" step="0.01"></td>
-                        <td class="col-unit"><input type="text" name="unit-{{ loop.index0 }}" class="unit"
-                                                    value="{{ ing['unit'] }}"></td>
-                        <td class="col-name"><input type="text" name="name-{{ loop.index0 }}" class="name"
-                                                    value="{{ ing['name'] }}"></td>
-                    </tr>
+            <div id="all-tb-ings">
+                {% for entry in r.ingredients %}
+                    {% set outer_loop = loop %}
+
+                    <div class="tb-ings-cont">
+
+                        <div class="pair">
+                            <label for="tb-ings-title-{{ outer_loop.index0 }}">Tabellentitel</label>
+                            <input id="tb-ings-title-{{ outer_loop.index0 }}"
+                                   type="text" name="tb-ings-title-{{ outer_loop.index0 }}"
+                                   value="{{ entry['title'] }}">
+                        </div>
+
+                        <table class="tb-ings" data-index="{{ outer_loop.index0 }}">
+                            <tr class="tb-ings-header">
+                                <th class="col-ctrl"></th>
+                                <th class="col-amount">Menge</th>
+                                <th class="col-unit">Einheit</th>
+                                <th class="col-name">Beschreibung</th>
+                            </tr>
+                            {% for ing in entry['data'] %}
+                                <tr>
+                                    <td class="col-ctrl">
+                                        <div class="minus">{% include'svg/minus.html' %}</div>
+                                        <div class="plus">{% include'svg/plus.html' %}</div>
+                                    </td>
+                                    <td class="col-amount">
+                                        <input type="number"
+                                               name="amount-{{ outer_loop.index0 }}-{{ loop.index0 }}"
+                                               class="amount"
+                                               value="{{ ing['amount'] }}" step="0.01">
+                                    </td>
+                                    <td class="col-unit">
+                                        <input type="text"
+                                               name="unit-{{ outer_loop.index0 }}-{{ loop.index0 }}"
+                                               class="unit"
+                                               value="{{ ing['unit'] }}">
+                                    </td>
+                                    <td class="col-name">
+                                        <input type="text"
+                                               name="name-{{ outer_loop.index0 }}-{{ loop.index0 }}"
+                                               class="name"
+                                               value="{{ ing['name'] }}">
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+
+                        <div class="tb-controls">
+                            <div class="tb-minus">{% include'svg/minus.html' %}</div>
+                            <div class="tb-plus">{% include'svg/plus.html' %}</div>
+                        </div>
+
+                    </div>
                 {% endfor %}
-            </table>
+            </div>
 
             <div class="pair">
                 <label for="instructions">Zubereitung</label>

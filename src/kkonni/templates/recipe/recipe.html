@@ -33,21 +33,30 @@
             </div>
         </div>
 
-        <table id="tb-ings">
-            {% for ing in r.ingredients %}
-                <tr>
-                    <td class="td-amount">
-                        <div class="amount">{{ ing['amount'] }}</div>
-                    </td>
-                    <td class="td-unit">
-                        <div class="unit">{{ ing['unit'] }}</div>
-                    </td>
-                    <td class="td-name">
-                        <div class="name">{{ ing['name'] }}</div>
-                    </td>
-                </tr>
+        <div id="all-tb-ings">
+            {% for entry in r.ingredients %}
+                {% if entry['title']|length > 0 %}
+                    <div class="tb-ings-title">
+                        {{ entry['title'] }}
+                    </div>
+                {% endif %}
+                <table class="tb-ings">
+                    {% for ing in entry['data'] %}
+                        <tr>
+                            <td class="td-amount">
+                                <div class="amount">{{ ing['amount'] }}</div>
+                            </td>
+                            <td class="td-unit">
+                                <div class="unit">{{ ing['unit'] }}</div>
+                            </td>
+                            <td class="td-name">
+                                <div class="name">{{ ing['name'] }}</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
             {% endfor %}
-        </table>
+        </div>
 
         <div id="instructions">
             {% for instruction in r.instructions.split('\n') %}
