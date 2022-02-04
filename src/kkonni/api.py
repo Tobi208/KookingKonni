@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, session, request
+from flask import current_app as ca
 
 from kkonni import util
 from kkonni.auth import api_login_required, api_comment_author, api_recipe_author
@@ -35,6 +36,7 @@ def add_comment(rid):
     author = util.get_username(uid)
     data = {'text': 'Comment was added', 'cid': cid, 'uid': uid, 'author': author, 'time': time, 'comment': comment}
 
+    ca.logger.info('User %s added a comment %s to recipe %s', uid, cid, rid)
     return jsonify(data), 200
 
 
@@ -50,6 +52,7 @@ def delete_comment(cid):
     cur.execute('DELETE FROM comment WHERE cid = ?', (cid,))
     get_db().commit()
 
+    ca.logger.info('Deleted comment %s', cid)
     return jsonify({'text': f'Comment {cid} was deleted'}), 200
 
 
@@ -77,6 +80,7 @@ def add_rating(rid):
     # gather data for response
     new_rating = util.update_rating(rid)
 
+    ca.logger.info('User %s rated recipe %s with rating %s', uid, rid, rating_id)
     return jsonify({'rating': new_rating}), 200
 
 
@@ -98,4 +102,5 @@ def delete_recipe(rid):
     cur.execute('DELETE FROM rating WHERE rid = ?', (rid,))
     get_db().commit()
 
+    ca.logger.info('Deleted recipe %s', rid)
     return jsonify({'text': f'Recipe {rid} was deleted'}), 200

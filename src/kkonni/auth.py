@@ -1,6 +1,7 @@
 import functools
 
 from flask import Blueprint, jsonify, redirect, render_template, request, session, url_for, escape
+from flask import current_app as ca
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from kkonni.db import get_db
@@ -130,6 +131,7 @@ def login():
         # and redirect if applicable
         session.clear()
         session['uid'] = user['uid']
+        ca.logger.info('User %s logged in', user['uid'])
         next_url = request.args.get('next')
         next_url = next_url if next_url else url_for('book.index')
         return redirect(next_url)
@@ -142,6 +144,8 @@ def logout():
     """
     Clear the current session, including the stored user id.
     """
+    if 'uid' in session:
+        ca.logger.info('User %s logged out', session['uid'])
     session.clear()
     return redirect(url_for('auth.login'))
 
@@ -184,6 +188,7 @@ def register():
         # log user in and redirect to index
         session.clear()
         session['uid'] = user['uid']
+        ca.logger.info('User %s activated their account', user['uid'])
         return redirect(url_for('book.index'))
 
     return render_template('auth/register.html')

@@ -1,7 +1,7 @@
 from json import loads
 
-from flask import Blueprint, render_template, session, redirect, url_for, request, escape
-from flask import send_from_directory, current_app
+from flask import Blueprint, render_template, session, redirect, url_for, request, escape, send_from_directory
+from flask import current_app as ca
 
 from kkonni import util
 from kkonni.auth import login_required, recipe_author
@@ -102,6 +102,7 @@ def edit_recipe(rid):
         # update image if applicable
         util.update_image(rid, request.files, image)
 
+        ca.logger.info('Edited recipe %s', rid)
         return redirect(url_for('book.recipe', rid=rid))
 
 
@@ -138,6 +139,7 @@ def new_recipe():
         rid = cur.lastrowid
         util.update_image(rid, request.files, image)
 
+        ca.logger.info('Added recipe %s', rid)
         return redirect(url_for('book.recipe', rid=rid))
 
 
@@ -146,4 +148,4 @@ def favicon():
     """
     Route favicon.
     """
-    return send_from_directory(current_app.config['IMAGE_DIR'], 'favicon.png')
+    return send_from_directory(ca.config['IMAGE_DIR'], 'favicon.png')
