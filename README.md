@@ -88,9 +88,7 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 * Support multiple languages (currently only German)
 
-* Append row on enter if in last cell
-
-* Custom input form errors
+* Custom input form errors (currently browser defaults)
 
 * Add Favicon _everywhere_ (currently only `/favicon.ico`)
 
@@ -104,3 +102,4 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
   * Added option to leave cells blank
   * Added option to insert rows anywhere
   * Now supports multiple ingredients tables
+  * Append new row on enter press in last cell

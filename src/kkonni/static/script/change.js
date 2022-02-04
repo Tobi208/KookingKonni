@@ -2,19 +2,12 @@
  * Handles edit/new recipe forms.
  */
 
-
-/**
- * Add a row to the ingredients table when clicking plus and
- * remove a specific row when clicking the corresponding minus.
- */
 const og_minus = document.querySelector('#change-form .minus')
 const og_plus = document.querySelector('#change-form .plus')
 const minuses = document.querySelectorAll('#change-form .minus svg')
 const pluses = document.querySelectorAll('#change-form .plus svg')
 const tb_minuses = document.querySelectorAll('#change-form .tb-minus svg')
 const tb_pluses = document.querySelectorAll('#change-form .tb-plus svg')
-const og_tb_minus = document.querySelector('#change-form .tb-minus')
-const og_tb_plus = document.querySelector('#change-form .tb-plus')
 const tables_cont = document.querySelector('#change-form #all-tb-ings')
 let table_conts = tables_cont.querySelectorAll('#change-form .tb-ings-cont')
 
@@ -63,6 +56,7 @@ function add_row(x) {
     ctrl.querySelector('.plus svg').addEventListener('click', () => add_row(ctrl))
     amount.innerHTML = `<input type="number" class="amount" step="0.01">`
     amount.classList.add('col-amount')
+    amount.querySelector('.amount').focus()
     unit.innerHTML = `<input type="text" class="unit">`
     unit.classList.add('col-unit')
     name.innerHTML = `<input type="text" class="name">`
@@ -92,7 +86,9 @@ for (const minus of minuses)
 for (const plus of pluses)
     plus.addEventListener('click', () => add_row(plus))
 
-
+/**
+ * Delete a table container containing an element x.
+ */
 function del_table(x) {
     while (!x.classList.contains('tb-ings-cont'))
         x = x.parentNode
@@ -103,6 +99,9 @@ function del_table(x) {
     }
 }
 
+/**
+ * Add a new table container after an element x.
+ */
 function add_table(x) {
 
     while (!x.classList.contains('tb-ings-cont'))
@@ -133,6 +132,9 @@ function add_table(x) {
     update_table_indices()
 }
 
+/**
+ * Adjust table container and inner table indices.
+ */
 function update_table_indices() {
     table_conts = tables_cont.querySelectorAll('.tb-ings-cont')
     let label, input, table
@@ -156,6 +158,28 @@ for (const minus of tb_minuses)
 for (const plus of tb_pluses)
     plus.addEventListener('click', () => add_table(plus))
 
+/**
+ * Add a new row if enter is pressed in the description
+ * cell of the last row.
+ */
+tables_cont.addEventListener('keypress', (event) => {
+    if (event.keyCode === 13) {
+        const e = document.activeElement
+        if (e.parentNode.classList.contains('col-name') && is_in_last_row(e)) {
+            add_row(e)
+            event.preventDefault()
+            event.stopPropagation()
+        }
+    }
+})
+function is_in_last_row(x) {
+    while (x.tagName !== 'TR')
+        x = x.parentNode
+    let table = x
+    while (table.tagName !== 'TABLE')
+        table = table.parentNode
+    return x.rowIndex === table.rows.length - 1
+}
 
 
 /**
