@@ -89,7 +89,6 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 * Support multiple languages (currently only German)
 
 zutatentabelle überarbeiten:
-	- zeilen zwischen drin (must have!)
 	- mehrere tabellen mit überschriften
 	- neue zeile per tastendruck (enter) (wäre sehr schön)
 
@@ -103,6 +102,6 @@ Custom input form errors!
 ### v0.2.0
 
 * Fixed language
-
 * Ingredients Table:
   * Added option to leave cells blank
+  * Added option to insert rows anywhere

@@ -83,11 +83,6 @@
     cursor: pointer;
 }
 
-#change-form .plus {
-    display: flex;
-    justify-content: center;
-}
-
 #change-form #tb-ings {
     width: 90%;
     table-layout: fixed;
@@ -99,7 +94,7 @@
     word-wrap: break-word;
 }
 
-#change-form #tb-ings .col-minus {
+#change-form #tb-ings .ctrl {
     width: 8%;
 }
 

@@ -7,9 +7,10 @@
  * Add a row to the ingredients table when clicking plus and
  * remove a specific row when clicking the corresponding minus.
  */
-const plus = document.querySelector('#change-form .plus svg')
 const og_minus = document.querySelector('#change-form .minus')
+const og_plus = document.querySelector('#change-form .plus')
 const minuses = document.querySelectorAll('#change-form .minus svg')
+const pluses = document.querySelectorAll('#change-form .plus svg')
 const table = document.querySelector('#tb-ings')
 
 /**
@@ -19,11 +20,56 @@ const table = document.querySelector('#tb-ings')
 function del_row(x) {
     // check viability
     if (table.rows.length > 2) {
-        // find row elements
+        // find row parent
         while (x.tagName !== 'TR')
             x = x.parentNode
         // delete
         table.deleteRow(x.rowIndex)
+        // update
+        update_row_indices()
+    }
+}
+
+/**
+ * Create a new row and insert it
+ * after the row that was clicked.
+ */
+function add_row(x) {
+
+    while (x.tagName !== 'TR')
+        x = x.parentNode
+    const ins_row_index = x.rowIndex + 1
+    const row = table.insertRow(ins_row_index)
+
+    const ctrl = row.insertCell(0)
+    const amount = row.insertCell(1)
+    const unit = row.insertCell(2)
+    const name = row.insertCell(3)
+
+    ctrl.appendChild(og_minus.cloneNode(true))
+    ctrl.appendChild(og_plus.cloneNode(true))
+    ctrl.classList.add('col-ctrl')
+    ctrl.querySelector('.minus svg').addEventListener('click', () => del_row(ctrl))
+    ctrl.querySelector('.plus svg').addEventListener('click', () => add_row(ctrl))
+    amount.innerHTML = `<input type="number" class="amount" step="0.01">`
+    amount.classList.add('col-amount')
+    unit.innerHTML = `<input type="text" class="unit">`
+    unit.classList.add('col-unit')
+    name.innerHTML = `<input type="text" class="name">`
+    name.classList.add('col-name')
+
+    update_row_indices()
+}
+
+/**
+ * Update the indices of the row elements.
+ */
+function update_row_indices() {
+    for (let i = 1; i < table.rows.length; i++) {
+        const update_row = table.rows[i]
+        update_row.querySelector('.col-amount input').setAttribute('name', `amount-${i - 1}`)
+        update_row.querySelector('.col-unit input').setAttribute('name', `unit-${i - 1}`)
+        update_row.querySelector('.col-name input').setAttribute('name', `name-${i - 1}`)
     }
 }
 
@@ -31,29 +77,9 @@ function del_row(x) {
 for (const minus of minuses)
     minus.addEventListener('click', () => del_row(minus))
 
-/**
- * Insert a new row at the bottom of the table.
- * Create all DOM elements and add them one by one.
- */
-plus.addEventListener('click', () => {
-    const row_count = table.rows.length
-    const row = table.insertRow(row_count);
-
-    const minus = row.insertCell(0)
-    const amount = row.insertCell(1)
-    const unit = row.insertCell(2)
-    const name = row.insertCell(3)
-
-    minus.appendChild(og_minus.cloneNode(true))
-    minus.classList.add('col-minus')
-    minus.querySelector('svg').addEventListener('click', () => del_row(minus))
-    amount.innerHTML = `<input type="number" name="amount-${row_count - 1}" class="amount" step="0.01" >`
-    amount.classList.add('col-amount')
-    unit.innerHTML = `<input type="text" name="unit-${row_count - 1}" class="unit" >`
-    unit.classList.add('col-unit')
-    name.innerHTML = `<input type="text" name="name-${row_count - 1}" class="name" >`
-    name.classList.add('col-name')
-})
+// add listener to all plus elements
+for (const plus of pluses)
+    plus.addEventListener('click', () => add_row(plus))
 
 
 /**

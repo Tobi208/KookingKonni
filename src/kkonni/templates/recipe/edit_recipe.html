@@ -27,15 +27,16 @@
 
             <table id="tb-ings">
                 <tr id="tb-ings-header">
-                    <th class="col-minus"></th>
+                    <th class="col-ctrl"></th>
                     <th class="col-amount">Menge</th>
                     <th class="col-unit">Einheit</th>
                     <th class="col-name">Beschreibung</th>
                 </tr>
                 {% for ing in r.ingredients %}
                     <tr>
-                        <td class="col-minus">
+                        <td class="col-ctrl">
                             <div class="minus">{% include'svg/minus.html' %}</div>
+                            <div class="plus">{% include'svg/plus.html' %}</div>
                         </td>
                         <td class="col-amount"><input type="number" name="amount-{{ loop.index0 }}" class="amount"
                                                       value="{{ ing['amount'] }}" step="0.01"></td>
@@ -46,7 +47,6 @@
                     </tr>
                 {% endfor %}
             </table>
-            <div class="plus">{% include'svg/plus.html' %}</div>
 
             <div class="pair">
                 <label for="instructions">Zubereitung</label>
