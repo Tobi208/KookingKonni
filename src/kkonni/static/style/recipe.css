@@ -16,8 +16,8 @@
 }
 
 #recipe #header svg {
-    width: 2.25em;
-    height: auto;
+    height: 2.25em;
+    width: auto;
 }
 
 #recipe #modify {
@@ -175,7 +175,8 @@
 }
 
 #comments #comment-form #user-rating svg {
-    width: 1.5em
+    height: 1.5em;
+    width: auto;
 }
 
 #comments #comment-form {
@@ -247,7 +248,7 @@
     }
 
     #recipe #header svg {
-        width: 1.75em;
+        height: 1.75em;
     }
 
     #recipe #image {

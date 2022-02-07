@@ -40,7 +40,16 @@ img {
     font-size: larger;
 }
 
+#recipes .footer svg {
+    height: 1.5em;
+    width: auto;
+}
+
 @media screen and (max-width: 920px) {
+
+    #content {
+        width: 98%;
+    }
 
     #recipes {
         flex-direction: column;

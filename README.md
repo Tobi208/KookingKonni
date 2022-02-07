@@ -76,7 +76,7 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 * Better styling!
 
-* Show number of ratings, show ratings in half-steps (currently average full-steps)
+* Show number of ratings
 
 * More sophisticated search mechanism (currently only inclusive)
 
@@ -103,3 +103,4 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
   * Added option to insert rows anywhere
   * Now supports multiple ingredients tables
   * Append new row on enter press in last cell
+* Increased rating scale to 1-10

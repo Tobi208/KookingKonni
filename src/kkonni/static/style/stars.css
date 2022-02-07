@@ -1,35 +1,40 @@
-.stars {
-    display: flex;
+.star path {
+    fill: #d8d8d8;
 }
 
-.star polygon {
-    fill: #d8d8d8;
+.star.half {
+    position: absolute;
 }
 
 .stars[data-stars="0"] {
     display: none;
 }
 
-.stars[data-stars="1"] .star:nth-child(1) polygon,
-.stars[data-stars="2"] .star:nth-child(-n+2) polygon,
-.stars[data-stars="3"] .star:nth-child(-n+3) polygon,
-.stars[data-stars="4"] .star:nth-child(-n+4) polygon,
-.stars[data-stars="5"] .star:nth-child(-n+5) polygon {
+.stars[data-stars="1"] .star:nth-child(1) path,
+.stars[data-stars="2"] .star:nth-child(-n+2) path,
+.stars[data-stars="3"] .star:nth-child(-n+3) path,
+.stars[data-stars="4"] .star:nth-child(-n+4) path,
+.stars[data-stars="5"] .star:nth-child(-n+5) path,
+.stars[data-stars="6"] .star:nth-child(-n+6) path,
+.stars[data-stars="7"] .star:nth-child(-n+7) path,
+.stars[data-stars="8"] .star:nth-child(-n+8) path,
+.stars[data-stars="9"] .star:nth-child(-n+9) path,
+.stars[data-stars="10"] .star:nth-child(-n+10) path{
     fill: #ffd055;
 }
 
 .stars.post[data-stars="0"] {
-    display: flex;
+    display: block;
 }
 
 .stars.post .star:hover {
     cursor: pointer;
 }
 
-.stars.post:hover .star polygon {
+.stars.post:hover .star path {
     fill: #ffd055;
 }
 
-.stars.post .star:hover ~ .star polygon {
+.stars.post .star:hover ~ .star path {
     fill: #d8d8d8;
 }

@@ -80,7 +80,7 @@ def add_rating(rid):
     # gather data for response
     new_rating = util.update_rating(rid)
 
-    ca.logger.info('User %s rated recipe %s with rating %s', uid, rid, rating_id)
+    ca.logger.info('User %s rated recipe %s with rating %s', uid, rid, rating)
     return jsonify({'rating': new_rating}), 200
 
 
