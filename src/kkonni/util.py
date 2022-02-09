@@ -2,7 +2,7 @@ from datetime import datetime
 from json import dumps
 from os import remove
 from os.path import join
-from re import split
+from re import split, sub
 
 from flask import current_app, escape
 from werkzeug.utils import secure_filename
@@ -113,8 +113,9 @@ def parse_form(form, uid):
     author = get_username(uid)
 
     # generate keywords to search the recipe by
-    keywords = ' '.join([name, tags, author, *ing_names])
-    keywords = ' '.join(set(split(r'\s+|-', keywords))).lower()
+    keywords = ' '.join([name, tags, author, *ing_names]).lower()
+    keywords = sub(r'-|\(|\)|:|%|\d|,|\.|;|\?|=', '', keywords).strip()
+    keywords = ' '.join(set(split(r'\s+', keywords)))
 
     # convert ingredients to json
     ings = dumps(ings)
