@@ -20,6 +20,10 @@
     width: auto;
 }
 
+#recipe #header .stars {
+    width: 12em;
+}
+
 #recipe #modify {
     width: 95%;
     display: flex;
@@ -208,6 +212,7 @@
     width: 100%;
     margin: 2em auto 2em auto;
     padding: 0.5em;
+    white-space: pre-line;
     border: 0.01em solid #ddd;
     border-radius: 0.5em;
     box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
@@ -230,6 +235,17 @@
 #comments .comment .author {
     display: flex;
     justify-content: flex-end;
+}
+
+a {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    box-shadow: 0 0.3em 0.6em 0 rgba(0, 0, 0, 0.4);
 }
 
 @media screen and (max-width: 900px) {
@@ -263,5 +279,9 @@
     #comments .comment {
         max-width: 90%;
     }
+
+    #recipe #header .stars {
+    width: 10em;
+}
 
 }

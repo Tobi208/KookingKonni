@@ -26,7 +26,12 @@ def index():
     if request.method == 'POST' and 'search' in request.form:
         search_words = escape(request.form['search'])
 
-    return render_template('index.html', search_words=search_words, rs=rs)
+    return render_template(
+        'index.html',
+        u=util.get_userdata(session['uid']),
+        rs=rs,
+        search_words=search_words
+    )
 
 
 @bp.route('/<int:rid>')
@@ -57,7 +62,7 @@ def recipe(rid):
           for c in sorted(cs, key=lambda c: c['time'] * -1)]
 
     # gather user id and their rating of the recipe
-    u = {'uid': session['uid']}
+    u = dict(util.get_userdata(session['uid']))
     u_rating = cur.execute('SELECT rating FROM rating WHERE rid = ? AND uid = ?', (rid, session['uid'])).fetchall()
     u['rating'] = u_rating[0][0] if len(u_rating) > 0 else 0
 
@@ -72,6 +77,8 @@ def edit_recipe(rid):
     GET  - show change recipe form and prefill it with recipe details.
     POST - process recipe changes. Only the author can change a recipe.
     """
+
+    u = util.get_userdata(session['uid'])
 
     # simply gather recipe details
     if request.method == 'GET':
@@ -102,8 +109,8 @@ def edit_recipe(rid):
         # update image if applicable
         util.update_image(rid, request.files, image)
 
-        ca.logger.info('Edited recipe %s', rid)
-        return redirect(url_for('book.recipe', rid=rid))
+        ca.logger.info('User %s (%s) edited recipe %s (%s)', u['username'], u['uid'], name, rid)
+        return redirect(url_for('book.recipe', u=u, rid=rid))
 
 
 @bp.route('/new', methods=('GET', 'POST'))
@@ -113,10 +120,11 @@ def new_recipe():
     GET  - show new recipe form.
     POST - process new recipe details.
     """
+    u = util.get_userdata(session['uid'])
 
     # simply display form
     if request.method == 'GET':
-        return render_template('recipe/new_recipe.html')
+        return render_template('recipe/new_recipe.html', u=u)
 
     # process new recipe details and redirect to result
     if request.method == 'POST':
@@ -139,8 +147,8 @@ def new_recipe():
         rid = cur.lastrowid
         util.update_image(rid, request.files, image)
 
-        ca.logger.info('Added recipe %s', rid)
-        return redirect(url_for('book.recipe', rid=rid))
+        ca.logger.info('User %s (%s) added recipe %s (%s)', u['username'], u['uid'], name, rid)
+        return redirect(url_for('book.recipe', u=u, rid=rid))
 
 
 @bp.route('/favicon.ico')

@@ -131,7 +131,7 @@ def login():
         # and redirect if applicable
         session.clear()
         session['uid'] = user['uid']
-        ca.logger.info('User %s logged in', user['uid'])
+        ca.logger.info('User %s (%s) logged in', username, user['uid'])
         next_url = request.args.get('next')
         next_url = next_url if next_url else url_for('book.index')
         return redirect(next_url)
@@ -188,7 +188,7 @@ def register():
         # log user in and redirect to index
         session.clear()
         session['uid'] = user['uid']
-        ca.logger.info('User %s activated their account', user['uid'])
+        ca.logger.info('User %s (%s) activated their account', username, user['uid'])
         return redirect(url_for('book.index'))
 
     return render_template('auth/register.html')

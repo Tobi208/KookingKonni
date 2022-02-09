@@ -76,13 +76,11 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 * Better styling!
 
-* Show number of ratings
-
 * More sophisticated search mechanism (currently only inclusive)
 
 * Custom sorting of results and comments (currently only oldest/newest first)
 
-* User profiles, notifications, tagging in comments (currently none)
+* Tagging users in comments (currently none)
 
 * Support different database technologies (currently only sqlite) 
 
@@ -104,3 +102,8 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
   * Now supports multiple ingredients tables
   * Append new row on enter press in last cell
 * Increased rating scale to 1-10
+* Social Features:
+  * Added user profiles
+  * Linked user profiles in recipes and comments
+  * Added notifications
+  * Added summary page of users

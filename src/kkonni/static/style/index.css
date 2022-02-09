@@ -18,7 +18,7 @@
 
 #recipes li.recipe:hover {
     cursor: pointer;
-    box-shadow: 0 0.4em 0.8em 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.4em 0.8em 0 rgba(0, 0, 0, 0.4);
 }
 
 img {
@@ -34,13 +34,18 @@ img {
     display: flex;
     padding: 1.5em;
     justify-content: space-between;
+    align-items: center;
 }
 
 #recipes li .title {
     font-size: larger;
 }
 
-#recipes .footer svg {
+.stars {
+    width: 8em;
+}
+
+.stars svg {
     height: 1.5em;
     width: auto;
 }

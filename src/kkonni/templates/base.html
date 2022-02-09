@@ -16,15 +16,16 @@
     <ul class="topnav">
 
         <li class="search">
-            <form action="{{ url_for('book.index') }}" method="POST">
-                <input type="text" id="search" name="search" value="{{ search_words or '' }}">
-            </form>
-        </li>
-
-        <li class="toggle">
-            <div class="toggle-bar"></div>
-            <div class="toggle-bar"></div>
-            <div class="toggle-bar"></div>
+            <div class="search-input">
+                <form action="{{ url_for('book.index') }}" method="POST">
+                        <input type="text" id="search" name="search" value="{{ search_words or '' }}">
+                </form>
+            </div>
+            <div class="toggle">
+                <div class="toggle-bar"></div>
+                <div class="toggle-bar"></div>
+                <div class="toggle-bar"></div>
+            </div>
         </li>
 
         <li class="flex-break"></li>
@@ -39,7 +40,12 @@
 
         <li class="flex-break"></li>
         <li class="submit">
-            <a href="{{ url_for('auth.logout') }}">Logout</a>
+            <a id="user-control" href="{{ url_for('social.profile', uid=u['uid']) }}">
+                {{ u['username'] }}
+                {% if u['notifications'] > 0 %}
+                    <div class="num-user-notifications">{{ u['notifications'] }}</div>
+                {% endif %}
+            </a>
         </li>
 
     </ul>

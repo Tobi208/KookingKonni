@@ -10,9 +10,7 @@
 
         <div id="header">
             <div id="name">{{ r.name }}</div>
-            <div id="rating">
-                {% include 'svg/stars.html' %}
-            </div>
+            <div id="rating" data-stars="{{ r.rating }}">{% include 'svg/stars.html' %}</div>
         </div>
 
         {% if r.uid == u.uid %}
@@ -70,7 +68,9 @@
                     <div class="tag">{{ tag }}</div>
                 {% endfor %}
             </div>
-            <div id="author">{{ r.author }}, {{ r.time }}</div>
+            <div id="author">
+                <a href="{{ url_for('social.profile', uid=r.uid) }}">{{ r.author }}, {{ r.time }}</a>
+            </div>
         </div>
 
     </div>
@@ -86,26 +86,13 @@
             <textarea id="user-comment"></textarea>
             <div id="user-comment-buttons">
                 <button type="button" id="user-comment-cancel">Abbrechen</button>
-                <button type="button" id="user-comment-save"
-                        onclick="add_comment({{ r.rid }})">
-                    Speichern
-                </button>
+                <button type="button" id="user-comment-save" onclick="add_comment({{ r.rid }})">Speichern</button>
             </div>
         </div>
 
         <div id="comment-section">
             {% for c in cs %}
-                <div class="comment" id="comment-{{ c.cid }}">
-                    {% if c.uid == u.uid %}
-                        <div class="modify">
-                            <div onclick="delete_comment({{ c.cid }})">
-                                {% include 'svg/delete.html' %}
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="comment-content">{{ c.comment }}</div>
-                    <div class="author">{{ c.author }}, {{ c.time }}</div>
-                </div>
+                <div class="comment" id="comment-{{ c.cid }}">{% if c.uid == u.uid %}<div class="modify"><div onclick="delete_comment({{ c.cid }})">{% include 'svg/delete.html' %}</div></div>{% endif %}<div class="comment-content">{{ c.comment }}</div><div class="author"><a href="{{ url_for('social.profile', uid=c.uid) }}">{{ c.author }}, {{ c.time }}</a></div></div>
             {% endfor %}
         </div>
 

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}{{ username }}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/profile.css') }}">
+    <script src="{{ url_for('static', filename='script/profile.js') }}" defer></script>
+{% endblock %}
+{% block content %}
+
+    <div class="header">
+        <div class="username">{{ username }}</div>
+        <div class="controls">
+            <div class="all-profiles"><a href="{{ url_for('social.users') }}">Alle Profile</a></div>
+            {% if is_user %}
+                <div class="logout"><a href="{{ url_for('auth.logout') }}">Logout</a></div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if is_user and ns|length > 0 %}
+        <div class="block">
+            <div class="title">Benachrichtigungen</div>
+            <ul class="notifications list">
+                {% for n in ns %}
+                    <li class="notification {% if n.seen == 0 %} unseen {% endif %}">
+                        <a href="{{ url_for('book.recipe', rid=n.rid) }}{% if n.cid is not none %}#comment-{{ n.cid }}{% endif %}">
+                            <div class="n-message">{{ n.message }}</div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if rs|length > 0 %}
+        <div class="block">
+            <div class="title">Rezepte ({{ rs|length }})</div>
+            <ul class="recipes list">
+                {% for r in rs %}
+                    <li class="recipe">
+                        <a href="{{ url_for('book.recipe', rid=r.rid) }}">
+                            <div class="r-name">{{ r.name }}</div>
+                            <div data-stars="{{ r.rating }}">{% include 'svg/stars.html' %}</div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if cs|length > 0 %}
+        <div class="block">
+            <div class="title">Kommentare ({{ cs|length }})</div>
+            <ul class="comments list">
+                {% for c in cs %}
+                    <li class="comment">
+                        <a href="{{ url_for('book.recipe', rid=c.rid) }}#comment-{{ c.cid }}">
+                            <div class="r-name">{{ c.name }}</div>
+                            <div class="c-comment">{{ c.comment }}</div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if ratings|length > 0 %}
+        <div class="block">
+            <div class="title">Bewertungen ({{ ratings|length }})</div>
+            <ul class="ratings list">
+                {% for rating in ratings %}
+                    <li class="recipe">
+                        <a href="{{ url_for('book.recipe', rid=rating.rid) }}">
+                            <div class="r-name">{{ rating.name }}</div>
+                            <div data-stars="{{ rating.rating }}">{% include 'svg/stars.html' %}</div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+{% endblock %}

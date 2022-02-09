@@ -18,7 +18,7 @@
 
                 <div class="footer">
                     <div class="title">{{ r.name }}</div>
-                    {% include 'svg/stars.html' %}
+                    <div data-stars="{{ r.rating }}">{% include 'svg/stars.html' %}</div>
                 </div>
 
             </li>

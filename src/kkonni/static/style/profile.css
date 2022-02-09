@@ -1,0 +1,114 @@
+.header {
+    padding: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.header .username {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.header .controls {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 0.5em;
+}
+
+.header .controls a {
+    color: black;
+    text-decoration: none;
+    padding: 0.3em;
+    border: 0.01em solid #c6c6c6;
+    border-radius: 0.5em;
+    transition: 0.3s;
+}
+
+.header .controls a:hover {
+    box-shadow: 0 0.3em 0.6em 0 rgba(0, 0, 0, 0.4);
+}
+
+.block {
+    margin: 1em;
+    border: 0.01em solid #c6c6c6;
+    border-radius: 0.5em;
+    transition: 0.3s;
+}
+
+.block .title {
+    padding: 0.5em;
+    font-size: 1.45em;
+}
+
+.list {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 0.5em;
+    row-gap: 0.5em;
+    column-gap: 0.5em;
+}
+
+.list li {
+    padding: 1em;
+    transition: 0.3s;
+    border: 0.01em solid #c6c6c6;
+    border-radius: 0.5em;
+    align-items: center;
+}
+
+.list li:hover {
+    box-shadow: 0 0.3em 0.6em 0 rgba(0, 0, 0, 0.4);
+}
+
+.stars svg {
+    height: 1em;
+    width: auto;
+}
+
+.stars {
+    width: 6em;
+}
+
+.list a {
+    color: black;
+    text-decoration: none;
+}
+
+.list .recipe a {
+    width: 20em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list .r-name {
+    font-size: 1.1em;
+}
+
+.list li.comment {
+    min-width: 20em;
+}
+
+.list .c-comment {
+    padding: 0.5em 0.25em 0.25em;
+}
+
+.list .n-message,
+.list .c-comment {
+    white-space: pre-line;
+}
+
+.list .notification.unseen {
+    background: #cfcdfd;
+}
+
+@media screen and (max-width: 920px) {
+
+    #content {
+        width: 98%;
+    }
+
+}

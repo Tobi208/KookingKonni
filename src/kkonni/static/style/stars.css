@@ -6,24 +6,28 @@
     position: absolute;
 }
 
-.stars[data-stars="0"] {
+[data-stars] {
+    display: block;
+}
+
+[data-stars="0"] {
     display: none;
 }
 
-.stars[data-stars="1"] .star:nth-child(1) path,
-.stars[data-stars="2"] .star:nth-child(-n+2) path,
-.stars[data-stars="3"] .star:nth-child(-n+3) path,
-.stars[data-stars="4"] .star:nth-child(-n+4) path,
-.stars[data-stars="5"] .star:nth-child(-n+5) path,
-.stars[data-stars="6"] .star:nth-child(-n+6) path,
-.stars[data-stars="7"] .star:nth-child(-n+7) path,
-.stars[data-stars="8"] .star:nth-child(-n+8) path,
-.stars[data-stars="9"] .star:nth-child(-n+9) path,
-.stars[data-stars="10"] .star:nth-child(-n+10) path{
+[data-stars="1"] .star:nth-child(1) path,
+[data-stars="2"] .star:nth-child(-n+2) path,
+[data-stars="3"] .star:nth-child(-n+3) path,
+[data-stars="4"] .star:nth-child(-n+4) path,
+[data-stars="5"] .star:nth-child(-n+5) path,
+[data-stars="6"] .star:nth-child(-n+6) path,
+[data-stars="7"] .star:nth-child(-n+7) path,
+[data-stars="8"] .star:nth-child(-n+8) path,
+[data-stars="9"] .star:nth-child(-n+9) path,
+[data-stars="10"] .star:nth-child(-n+10) path{
     fill: #ffd055;
 }
 
-.stars.post[data-stars="0"] {
+[data-stars="0"] .post {
     display: block;
 }
 

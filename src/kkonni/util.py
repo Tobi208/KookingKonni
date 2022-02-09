@@ -55,7 +55,7 @@ def update_rating(rid):
     # calculate new rating
     db = get_db()
     ratings = db.execute("SELECT rating FROM rating WHERE rid = ?", (rid,)).fetchall()
-    new_rating = round(sum(r[0] for r in ratings) / len(ratings))
+    new_rating = int(round(sum(r[0] for r in ratings) / len(ratings)))
 
     # write changes to database
     db.execute("UPDATE recipe SET rating = ? WHERE rid = ?", (new_rating, rid))
@@ -134,3 +134,23 @@ def get_timestamp():
     Returns the current epoch timestamp rounded.
     """
     return int(datetime.now().timestamp())
+
+
+def get_userdata(uid):
+    """
+    Gather general data about a user.
+    """
+
+    cur = get_db().cursor()
+
+    user_data = cur.execute("""
+        SELECT user.uid,
+               user.username,
+               (SELECT COUNT(*)
+                FROM notification
+                WHERE notification.uid == ? AND notification.seen == 0)	as notifications
+        FROM user
+        WHERE user.uid == ?
+    """, (uid, uid)).fetchone()
+
+    return user_data
