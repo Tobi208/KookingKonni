@@ -34,14 +34,6 @@ for r in recipes:
     cur.execute('UPDATE recipe SET keywords = ? WHERE rid = ?', (new_keywords, r['rid']))
 con.commit()
 
-# keywords
-recipes = [{'rid': t[0], 'keywords': t[1]} for t in cur.execute('SELECT rid, keywords FROM recipe').fetchall()]
-for r in recipes:
-    new_keywords = re.sub(r'-|\(|\)|:|%|\d|,|\.|;|\?|=', '', r['keywords'])
-    new_keywords = re.sub(r'\s+', ' ', new_keywords).strip()
-    cur.execute('UPDATE recipe SET keywords = ? WHERE rid = ?', (new_keywords, r['rid']))
-con.commit()
-
 # ratings
 ratings = [{'id': t[0], 'rid': t[1], 'rating': t[2]} for t in cur.execute('SELECT id, rid, rating FROM rating').fetchall()]
 for r in ratings:
