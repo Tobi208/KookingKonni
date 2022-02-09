@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import re
 
 
 con = sqlite3.connect('kkonni.sqlite3')
@@ -23,6 +24,14 @@ for r in recipes:
         else:
             new_ingredients[-1]['data'].append(i)
     cur.execute('UPDATE recipe SET ingredients = ? WHERE rid = ?', (json.dumps(new_ingredients), r['rid']))
+con.commit()
+
+# keywords
+recipes = [{'rid': t[0], 'keywords': t[1]} for t in cur.execute('SELECT rid, keywords FROM recipe').fetchall()]
+for r in recipes:
+    new_keywords = re.sub(r'-|\(|\)|:|%|\d|,|\.|;|\?|=', '', r['keywords'])
+    new_keywords = re.sub(r'\s+', ' ', new_keywords).strip()
+    cur.execute('UPDATE recipe SET keywords = ? WHERE rid = ?', (new_keywords, r['rid']))
 con.commit()
 
 # ratings

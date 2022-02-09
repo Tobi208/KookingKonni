@@ -96,6 +96,7 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 ### v0.2.0
 
 * Fixed language
+* Fixed keywords generation
 * Ingredients Table:
   * Added option to leave cells blank
   * Added option to insert rows anywhere
