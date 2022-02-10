@@ -44,6 +44,12 @@ ul.topnav li.search input {
     padding: 0.3em 0.5em;
 }
 
+ul.topnav li.search input:focus,
+ul.topnav li.search input:hover {
+    outline: none !important;
+    box-shadow: 0 0 0.2em 0.1em rgba(155, 37, 201, 1);
+}
+
 ul.topnav li.search .toggle div.toggle-bar {
     width: 1.6em;
     height: 0.25em;
