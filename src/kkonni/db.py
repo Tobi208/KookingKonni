@@ -146,7 +146,7 @@ def init_delete_user_command(username):
     # recalculate rating of recipes the user rated
     for rid in [rid[0] for rid in rids]:
         ratings = db.execute("SELECT rating FROM rating WHERE rid = ?", (rid,)).fetchall()
-        new_rating = int(round(sum(r[0] for r in ratings) / len(ratings)))
+        new_rating = int(round(sum(r[0] for r in ratings) / len(ratings))) if len(ratings) > 0 else 0
         db.execute("UPDATE recipe SET rating = ? WHERE rid = ?", (new_rating, rid))
     db.commit()
 

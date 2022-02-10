@@ -7,7 +7,7 @@ con = sqlite3.connect('kkonni.sqlite3')
 cur = con.cursor()
 
 # ingredients and keywords
-recipes = [{'rid': t[0], 'ingredients': t[1], 'keywords': t[2]} for t in cur.execute('SELECT rid, ingredients, keywords FROM recipe').fetchall()]
+recipes = [{'rid': t[0], 'ingredients': t[1]} for t in cur.execute('SELECT rid, ingredients FROM recipe').fetchall()]
 for r in recipes:
     ingredients = json.loads(r['ingredients'])
     new_ingredients = [{'title': '', 'data': []}]
@@ -23,7 +23,7 @@ for r in recipes:
             new_ingredients.append({'title': '', 'data': []})
         else:
             new_ingredients[-1]['data'].append(i)
-    cur.execute('UPDATE recipe SET ingredients = ?, keywords = ? WHERE rid = ?', (json.dumps(new_ingredients), r['rid']))
+    cur.execute('UPDATE recipe SET ingredients = ? WHERE rid = ?', (json.dumps(new_ingredients), r['rid']))
 con.commit()
 
 # keywords

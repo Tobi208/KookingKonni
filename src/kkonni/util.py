@@ -55,7 +55,7 @@ def update_rating(rid):
     # calculate new rating
     db = get_db()
     ratings = db.execute("SELECT rating FROM rating WHERE rid = ?", (rid,)).fetchall()
-    new_rating = int(round(sum(r[0] for r in ratings) / len(ratings)))
+    new_rating = int(round(sum(r[0] for r in ratings) / len(ratings))) if len(ratings) > 0 else 0
 
     # write changes to database
     db.execute("UPDATE recipe SET rating = ? WHERE rid = ?", (new_rating, rid))
