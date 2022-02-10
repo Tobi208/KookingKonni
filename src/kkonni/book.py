@@ -153,4 +153,4 @@ def favicon():
     """
     Route favicon.
     """
-    return send_from_directory(ca.config['IMAGE_DIR'], 'favicon.png')
+    return send_from_directory(ca.config['IMAGE_DIR'], 'favicon.ico')

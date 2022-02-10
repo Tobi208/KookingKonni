@@ -86,8 +86,6 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 * Custom input form errors (currently browser defaults)
 
-* Add Favicon _everywhere_ (currently only `/favicon.ico`)
-
 
 ## Changelog
 
@@ -95,6 +93,7 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 * Fixed language
 * Fixed keywords generation
+* Fixed Favicon
 * Ingredients Table:
   * Added option to leave cells blank
   * Added option to insert rows anywhere
