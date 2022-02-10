@@ -85,7 +85,7 @@ def edit_recipe(rid):
             return redirect(url_for('book.index'))
 
         r = dict(r) | {'ingredients': loads(r['ingredients'])}
-        return render_template('recipe/edit_recipe.html', r=r)
+        return render_template('recipe/edit_recipe.html', r=r, u=u)
 
     # process recipe changes and redirect to result
     if request.method == 'POST':

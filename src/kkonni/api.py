@@ -42,7 +42,7 @@ def add_comment(rid):
     }
 
     # create notification for recipe author
-    recipe = cur.execute('SELECT uid, name FROM recipe WHERE rid == ?', (rid,)).fetchone()[0]
+    recipe = cur.execute('SELECT uid, name FROM recipe WHERE rid == ?', (rid,)).fetchone()
     if uid != recipe['uid']:
         message = f"{comment_author} hat '{recipe['name']}' kommentiert:\n\n{comment}"
         cur.execute("INSERT INTO notification (uid, rid, cid, time, message, seen) VALUES (?, ?, ?, ?, ?, ?)",
@@ -96,7 +96,7 @@ def add_rating(rid):
         get_db().commit()
 
     # create notification for recipe author
-    recipe = cur.execute('SELECT uid, name FROM recipe WHERE rid == ?', (rid,)).fetchone()[0]
+    recipe = cur.execute('SELECT uid, name FROM recipe WHERE rid == ?', (rid,)).fetchone()
     if uid != recipe['uid']:
         message = f"{rating_author} hat '{recipe['name']}' mit {rating}/10 bewertet"
         cur.execute("INSERT INTO notification (uid, rid, rating_id, time, message, seen) VALUES (?, ?, ?, ?, ?, ?)",
