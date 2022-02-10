@@ -17,9 +17,7 @@
 
         <li class="search">
             <div class="search-input">
-                <form action="{{ url_for('book.index') }}" method="POST">
-                        <input type="text" id="search" name="search" value="{{ search_words or '' }}">
-                </form>
+                <input type="text" id="search" value="{{ search_words or '' }}" data-url="{{ url_for('book.index') }}">
             </div>
             <div class="toggle">
                 <div class="toggle-bar"></div>

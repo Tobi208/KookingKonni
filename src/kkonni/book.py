@@ -10,7 +10,7 @@ from kkonni.db import get_db
 bp = Blueprint("book", __name__)
 
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('/')
 @login_required
 def index():
     """
@@ -21,16 +21,11 @@ def index():
     cur = get_db().cursor()
     rs = cur.execute('SELECT rid, name, image, rating, keywords FROM recipe ORDER BY rid').fetchall()
 
-    # can post search words to the page to pre-filter
-    search_words = ''
-    if request.method == 'POST' and 'search' in request.form:
-        search_words = escape(request.form['search'])
-
     return render_template(
         'index.html',
         u=util.get_userdata(session['uid']),
         rs=rs,
-        search_words=search_words
+        search_words=request.args.get('q', '').strip()
     )
 
 

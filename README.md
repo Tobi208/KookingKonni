@@ -109,3 +109,4 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
   * Added notifications
   * Added summary page of users
 * Improved Styling
+* Click tag to search recipes that include it

@@ -6,7 +6,6 @@
  * Display any recipe whose keywords contain any of the search words.
  * Should be expanded to sophisticated search syntax with "" - etc.
  */
-const search_bar = document.getElementById("search")
 const recipes = document.getElementsByClassName("recipe")
 function filter_recipes() {
     // gather words from search input
