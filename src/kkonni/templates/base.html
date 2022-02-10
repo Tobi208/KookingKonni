@@ -16,6 +16,7 @@
     <ul class="topnav">
 
         <li class="search">
+            {% block sort_recipes %}{% endblock %}
             <div class="search-input">
                 <input type="text" id="search" value="{{ search_words or '' }}" data-url="{{ url_for('book.index') }}">
             </div>

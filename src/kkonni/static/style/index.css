@@ -50,6 +50,30 @@ img {
     width: auto;
 }
 
+.search-sort {
+    display: flex;
+    justify-content: center;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 1.5em;
+    color: white;
+    border-radius: 0.2em;
+    border: 0.1em solid white;
+    margin-right: 0.35em;
+    transition: 0.3s;
+
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.search-sort:hover {
+    cursor: pointer;
+    color: #9b25c9;
+    border-color: #9b25c9;
+}
+
 @media screen and (max-width: 920px) {
 
     #content {

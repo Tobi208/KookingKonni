@@ -77,7 +77,7 @@
 
     <div id="comments">
 
-        <div id="comment-title">Kommentare</div>
+        <div id="comment-title">Kommentare<div class="comment-sort">&#8643;&#8638;</div></div>
 
         <div id="comment-form">
             {# set data-stars and .post in JS #}
@@ -92,7 +92,7 @@
 
         <div id="comment-section">
             {% for c in cs %}
-                <div class="comment" id="comment-{{ c.cid }}">{% if c.uid == u.uid %}<div class="modify"><div onclick="delete_comment({{ c.cid }})">{% include 'svg/delete.html' %}</div></div>{% endif %}<div class="comment-content">{{ c.comment }}</div><div class="author"><a href="{{ url_for('social.profile', uid=c.uid) }}">{{ c.author }}, {{ c.time }}</a></div></div>
+                <div class="comment" data-time="{{ c['epoch'] }}" id="comment-{{ c.cid }}">{% if c.uid == u.uid %}<div class="modify"><div onclick="delete_comment({{ c.cid }})">{% include 'svg/delete.html' %}</div></div>{% endif %}<div class="comment-content">{{ c.comment }}</div><div class="author"><a href="{{ url_for('social.profile', uid=c.uid) }}">{{ c.author }}, {{ c.time }}</a></div></div>
             {% endfor %}
         </div>
 

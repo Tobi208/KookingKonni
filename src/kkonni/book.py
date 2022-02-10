@@ -19,7 +19,7 @@ def index():
 
     # gather all recipes
     cur = get_db().cursor()
-    rs = cur.execute('SELECT rid, name, image, rating, keywords FROM recipe ORDER BY rid').fetchall()
+    rs = cur.execute('SELECT rid, name, image, rating, keywords, time FROM recipe ORDER BY name').fetchall()
 
     return render_template(
         'index.html',
@@ -52,9 +52,11 @@ def recipe(rid):
 
     # gather all comments of the recipe
     # convert timestamp and author and sort by newest comments first
-    cs = cur.execute('SELECT * FROM comment WHERE rid = ?', (rid,)).fetchall()
-    cs = [dict(c) | {'time': util.timestamp_to_date(c['time']), 'author': util.get_username(c['uid'])}
-          for c in sorted(cs, key=lambda c: c['time'] * -1)]
+    cs = cur.execute('SELECT * FROM comment WHERE rid = ? ORDER BY time DESC', (rid,)).fetchall()
+    cs = [dict(c) | {'time': util.timestamp_to_date(c['time']),
+                     'epoch': c['time'],
+                     'author': util.get_username(c['uid'])}
+          for c in cs]
 
     # gather user id and their rating of the recipe
     u = dict(util.get_userdata(session['uid']))

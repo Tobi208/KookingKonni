@@ -78,8 +78,6 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 
 * More sophisticated search mechanism (currently only inclusive)
 
-* Custom sorting of results and comments (currently only oldest/newest first)
-
 * Tagging users in comments (currently none)
 
 * Support different database technologies (currently only sqlite) 
@@ -108,5 +106,6 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
   * Linked user profiles in recipes and comments
   * Added notifications
   * Added summary page of users
-* Improved Styling
+* Improved styling
 * Click tag to search recipes that include it
+* Added sorting options for recipes and comments

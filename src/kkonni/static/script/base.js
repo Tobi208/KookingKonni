@@ -46,7 +46,7 @@ window.addEventListener('resize', () => {
 const search_bar = document.querySelector('.topnav #search')
 const index_url = search_bar.dataset.url
 search_bar.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && window.location.pathname !== '/') {
         const values = search_bar.value
         if (values !== '') {
             window.location.href = `${index_url}?q=${values.replace(' ', '+')}`
