@@ -2,7 +2,7 @@ from datetime import datetime
 from json import dumps
 from os import remove
 from os.path import join
-from re import split
+from re import split, sub
 
 from flask import current_app, escape
 from werkzeug.utils import secure_filename
@@ -55,7 +55,7 @@ def update_rating(rid):
     # calculate new rating
     db = get_db()
     ratings = db.execute("SELECT rating FROM rating WHERE rid = ?", (rid,)).fetchall()
-    new_rating = round(sum(r[0] for r in ratings) / len(ratings))
+    new_rating = int(round(sum(r[0] for r in ratings) / len(ratings))) if len(ratings) > 0 else 0
 
     # write changes to database
     db.execute("UPDATE recipe SET rating = ? WHERE rid = ?", (new_rating, rid))
@@ -85,13 +85,21 @@ def parse_form(form, uid):
 
     # parse ingredients table containing amount, unit, and description
     ings = []
+    ing_names = []
     i = 0
-    while f'amount-{i}' in form:
-        ings.append({
-            'amount': float(escape(form[f'amount-{i}'])),
-            'unit': escape(form[f'unit-{i}']).strip(),
-            'name': escape(form[f'name-{i}']).strip(),
-        })
+    while f'tb-ings-title-{i}' in form:
+        title = escape(form[f'tb-ings-title-{i}'])
+        data = []
+        j = 0
+        while f'amount-{i}-{j}' in form:
+            ing_names.append(escape(form[f'name-{i}-{j}']).strip())
+            data.append({
+                'amount': escape(form[f'amount-{i}-{j}']),
+                'unit': escape(form[f'unit-{i}-{j}']).strip(),
+                'name': ing_names[-1],
+            })
+            j += 1
+        ings.append({'title': title, 'data': data})
         i += 1
 
     # recipe instructions
@@ -105,8 +113,9 @@ def parse_form(form, uid):
     author = get_username(uid)
 
     # generate keywords to search the recipe by
-    keywords = ' '.join([name, tags, author, *[ing['name'] for ing in ings]])
-    keywords = ' '.join(set(split(r'\s+|-', keywords))).lower()
+    keywords = ' '.join([name, tags, author, *ing_names])
+    keywords = sub(r'-|\(|\)|:|%|\d|,|\.|;|\?|=', '', keywords).lower()
+    keywords = ' '.join(set(split(r'\s+|-', keywords)))
 
     # convert ingredients to json
     ings = dumps(ings)
@@ -126,3 +135,23 @@ def get_timestamp():
     Returns the current epoch timestamp rounded.
     """
     return int(datetime.now().timestamp())
+
+
+def get_userdata(uid):
+    """
+    Gather general data about a user.
+    """
+
+    cur = get_db().cursor()
+
+    user_data = cur.execute("""
+        SELECT user.uid,
+               user.username,
+               (SELECT COUNT(*)
+                FROM notification
+                WHERE notification.uid == ? AND notification.seen == 0)	as notifications
+        FROM user
+        WHERE user.uid == ?
+    """, (uid, uid)).fetchone()
+
+    return user_data

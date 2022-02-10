@@ -13,9 +13,9 @@ ul.topnav {
     padding: 1.1em;
     background-color: #111;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    gap: 0.5em;
+    column-gap: 0.5em;
 }
 
 /* https://tobiasahlin.com/blog/flexbox-break-to-new-row/ */
@@ -27,22 +27,37 @@ ul.topnav li.flex-break {
 }
 
 ul.topnav li.search {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    align-items: center;
+}
+
+ul.topnav li.search .search-input {
+    margin-right: 2em;
+    width: 100%;
     flex-grow: 1;
 }
 
 ul.topnav li.search input {
-    width: 95%;
+    width: 100%;
     padding: 0.3em 0.5em;
 }
 
-ul.topnav li.toggle div.toggle-bar {
+ul.topnav li.search input:focus,
+ul.topnav li.search input:hover {
+    outline: none !important;
+    box-shadow: 0 0 0.2em 0.1em rgba(155, 37, 201, 1);
+}
+
+ul.topnav li.search .toggle div.toggle-bar {
     width: 1.6em;
     height: 0.25em;
     background-color: #ffffff;
     margin: 0.35em 0;
 }
 
-ul.topnav li.toggle {
+ul.topnav li.search .toggle {
     display: none;
 }
 
@@ -54,6 +69,7 @@ ul.topnav li a {
 }
 
 ul.topnav li.submit a {
+    display: flex;
     text-align: center;
     text-decoration: none;
     color: white;
@@ -61,6 +77,25 @@ ul.topnav li.submit a {
 
 ul.topnav li.submit a:hover {
     color: #9b25c9;
+}
+
+ul.topnav li.submit #user-control {
+    display: flex;
+    align-items: center;
+    column-gap: 0.2em;
+}
+
+ul.topnav li.submit .num-user-notifications {
+    margin-left: 0.5em;
+    background: white;
+    color: #9b25c9;
+    border-radius: 100%;
+    width: 1em;
+    height: 1em;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 0.2em;
 }
 
 
@@ -74,7 +109,7 @@ ul.topnav li.submit a:hover {
         display: none;
     }
 
-    ul.topnav li.toggle {
+    ul.topnav li.search .toggle {
         display: block;
         margin-left: 1em;
         margin-right: 0.5em;

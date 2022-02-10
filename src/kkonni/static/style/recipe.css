@@ -16,8 +16,12 @@
 }
 
 #recipe #header svg {
-    width: 2.25em;
-    height: auto;
+    height: 2.25em;
+    width: auto;
+}
+
+#recipe #header .stars {
+    width: 12em;
 }
 
 #recipe #modify {
@@ -81,6 +85,20 @@
     border-bottom-right-radius: 0.5em;
 }
 
+#recipe #all-tb-ings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1em;
+}
+
+#recipe #all-tb-ings .tb-ings-title{
+    display: flex;
+    justify-content: center;
+    padding: 0.25em;
+    font-size: 1.25em;
+}
+
 #recipe table {
     margin: 1em auto 2em auto;
     border-radius: 0.5em;
@@ -98,8 +116,12 @@
     min-width: 5em;
 }
 
-#recipe tr:nth-child(odd){
-    background-color: #f2f2f2;
+#recipe tr {
+    min-height: 10em;
+}
+
+#recipe tr:nth-child(even){
+    background-color: #d5d5d5;
 }
 
 #recipe #instructions {
@@ -140,6 +162,11 @@
     border: 0.01em solid #ddd;
     border-radius: 0.5em;
     box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
+    transition: 0.3s;
+}
+
+#recipe #footer .tag:hover {
+    box-shadow: 0 0.3em 0.6em 0 rgba(0, 0, 0, 0.4);
 }
 
 #comments {
@@ -157,7 +184,8 @@
 }
 
 #comments #comment-form #user-rating svg {
-    width: 1.5em
+    height: 1.5em;
+    width: auto;
 }
 
 #comments #comment-form {
@@ -189,6 +217,7 @@
     width: 100%;
     margin: 2em auto 2em auto;
     padding: 0.5em;
+    white-space: pre-line;
     border: 0.01em solid #ddd;
     border-radius: 0.5em;
     box-shadow: 0 0 0.1em 0.05em rgba(0, 140, 186, 0.5);
@@ -213,6 +242,44 @@
     justify-content: flex-end;
 }
 
+a {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    box-shadow: 0 0.3em 0.6em 0 rgba(0, 0, 0, 0.4);
+}
+
+#comment-title {
+    display: flex;
+}
+
+.comment-sort {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.15em;
+    height: 1.15em;
+    border-radius: 0.3em;
+    border: 0.01em solid #2a2a2a;
+    margin-left: 0.35em;
+    transition: 0.3s;
+
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.comment-sort:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0.15em 0 rgba(0, 0, 0, 0.4);
+}
+
+
 @media screen and (max-width: 900px) {
 
     #content {
@@ -229,7 +296,7 @@
     }
 
     #recipe #header svg {
-        width: 1.75em;
+        height: 1.75em;
     }
 
     #recipe #image {
@@ -243,6 +310,10 @@
     #comments #comment-form textarea,
     #comments .comment {
         max-width: 90%;
+    }
+
+    #recipe #header .stars {
+        width: 10em;
     }
 
 }

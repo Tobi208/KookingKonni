@@ -23,7 +23,6 @@
 #change-form .pair input {
     padding: 0.5em;
     font-size: 1.25em;
-
 }
 
 /* Circumvent file input styling */
@@ -57,17 +56,31 @@
     height: 10em;
 }
 
-#change-form #tb-ings {
-    margin: auto;
+#change-form #all-tb-ings {
+    padding: 1em;
 }
 
-#change-form #tb-ings input,
-#change-form #tb-ings th {
+#change-form .tb-ings {
+    margin: auto;
+    padding: 1em;
+}
+
+#change-form .tb-ings-title-label {
+    font-size: 1.5em;
+}
+
+#change-form .tb-ings-title {
+    font-size: 1.25em;
+}
+
+
+#change-form .tb-ings input,
+#change-form .tb-ings th {
     font-size: 1.1em;
     padding: 0.2em;
 }
 
-#change-form #tb-ings input.amount {
+#change-form .tb-ings input.amount {
     text-align: end;
 }
 
@@ -78,46 +91,55 @@
     stroke-width: 0.35em;
 }
 
-#change-form .minus svg:hover,
-#change-form .plus svg:hover {
-    cursor: pointer;
-}
-
-#change-form .plus {
+#change-form .tb-controls {
     display: flex;
     justify-content: center;
 }
 
-#change-form #tb-ings {
+#change-form .tb-minus svg,
+#change-form .tb-plus svg {
+    width: 2em;
+    height: auto;
+    stroke-width: 0.5em;
+}
+
+#change-form .minus svg:hover,
+#change-form .plus svg:hover,
+#change-form .tb-minus svg:hover,
+#change-form .tb-plus svg:hover {
+    cursor: pointer;
+}
+
+#change-form .tb-ings {
     width: 90%;
     table-layout: fixed;
 }
 
-#change-form #tb-ings td {
+#change-form .tb-ings td {
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word;
 }
 
-#change-form #tb-ings .col-minus {
+#change-form .tb-ings .ctrl {
     width: 8%;
 }
 
-#change-form #tb-ings .col-amount {
+#change-form .tb-ings .col-amount {
     width: 12%;
 }
 
-#change-form #tb-ings .col-unit {
+#change-form .tb-ings .col-unit {
     width: 30%;
 }
 
-#change-form #tb-ings .col-name {
+#change-form .tb-ings .col-name {
     width: 50%;
 }
 
-#change-form #tb-ings .amount,
-#change-form #tb-ings .unit,
-#change-form #tb-ings .name {
+#change-form .tb-ings .amount,
+#change-form .tb-ings .unit,
+#change-form .tb-ings .name {
     width: 90%;
 }
 
@@ -148,19 +170,26 @@
         stroke-width: 0.25em;
     }
 
-    #change-form #tb-ings input,
-    #change-form #tb-ings th {
+    #change-form .tb-minus svg,
+    #change-form .tb-plus svg {
+        width: 1.75em;
+        height: auto;
+        stroke-width: 0.35em;
+    }
+
+    #change-form .tb-ings input,
+    #change-form .tb-ings th {
         font-size: 0.8em;
         padding: 0.05em;
     }
 
-    #change-form #tb-ings {
+    #change-form .tb-ings {
         width: 100%;
     }
 
-    #change-form #tb-ings .amount,
-    #change-form #tb-ings .unit,
-    #change-form #tb-ings .name {
+    #change-form .tb-ings .amount,
+    #change-form .tb-ings .unit,
+    #change-form .tb-ings .name {
         width: 100%;
     }
 

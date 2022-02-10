@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify, session, request, url_for
+from flask import current_app as ca
 
 from kkonni import util
 from kkonni.auth import api_login_required, api_comment_author, api_recipe_author
@@ -32,9 +33,23 @@ def add_comment(rid):
     # gather data for response
     cid = cur.lastrowid
     time = util.timestamp_to_date(time)
-    author = util.get_username(uid)
-    data = {'text': 'Comment was added', 'cid': cid, 'uid': uid, 'author': author, 'time': time, 'comment': comment}
+    comment_author = util.get_username(uid)
+    data = {
+        'text': 'Comment was added',
+        'cid': cid, 'uid': uid,
+        'author': comment_author, 'time': time, 'comment': comment,
+        'profile_url': url_for('social.profile', uid=uid)
+    }
 
+    # create notification for recipe author
+    recipe = cur.execute('SELECT uid, name FROM recipe WHERE rid == ?', (rid,)).fetchone()[0]
+    if uid != recipe['uid']:
+        message = f"{comment_author} hat '{recipe['name']}' kommentiert:\n\n{comment}"
+        cur.execute("INSERT INTO notification (uid, rid, cid, time, message, seen) VALUES (?, ?, ?, ?, ?, ?)",
+                    (recipe['uid'], rid, cid, time, message, 0))
+        get_db().commit()
+
+    ca.logger.info('User %s (%s) added a comment (%s) to recipe %s (%s)', comment_author, uid, cid, recipe['name'] ,rid)
     return jsonify(data), 200
 
 
@@ -48,8 +63,10 @@ def delete_comment(cid):
     # write changes to database
     cur = get_db().cursor()
     cur.execute('DELETE FROM comment WHERE cid = ?', (cid,))
+    cur.execute('DELETE FROM notification WHERE cid = ?', (cid,))
     get_db().commit()
 
+    ca.logger.info('Deleted comment %s', cid)
     return jsonify({'text': f'Comment {cid} was deleted'}), 200
 
 
@@ -62,6 +79,7 @@ def add_rating(rid):
 
     # gather data from request and other
     uid = session['uid']
+    rating_author = util.get_username(uid)
     data = request.get_json()
     rating = int(data['rating'])
     cur = get_db().cursor()
@@ -70,13 +88,25 @@ def add_rating(rid):
     # write changes to database, check if insert or update
     if len(rating_id) == 0:
         cur.execute('INSERT INTO rating (rid, uid, rating) VALUES (?,?,?)', (rid, uid, rating))
+        get_db().commit()
+        rating_id = cur.lastrowid
     else:
+        rating_id = rating_id[0][0]
         cur.execute('UPDATE rating SET rating = ? WHERE id = ?', (rating, rating_id[0][0]))
-    get_db().commit()
+        get_db().commit()
+
+    # create notification for recipe author
+    recipe = cur.execute('SELECT uid, name FROM recipe WHERE rid == ?', (rid,)).fetchone()[0]
+    if uid != recipe['uid']:
+        message = f"{rating_author} hat '{recipe['name']}' mit {rating}/10 bewertet"
+        cur.execute("INSERT INTO notification (uid, rid, rating_id, time, message, seen) VALUES (?, ?, ?, ?, ?, ?)",
+                    (recipe['uid'], rid, rating_id, util.get_timestamp(), message, 0))
+        get_db().commit()
 
     # gather data for response
     new_rating = util.update_rating(rid)
 
+    ca.logger.info('User %s (%s) rated recipe %s with rating %s', rating_author, uid, rid, rating)
     return jsonify({'rating': new_rating}), 200
 
 
@@ -96,6 +126,8 @@ def delete_recipe(rid):
     cur.execute('DELETE FROM recipe WHERE rid = ?', (rid,))
     cur.execute('DELETE FROM comment WHERE rid = ?', (rid,))
     cur.execute('DELETE FROM rating WHERE rid = ?', (rid,))
+    cur.execute('DELETE FROM notification WHERE rid = ?', (rid,))
     get_db().commit()
 
+    ca.logger.info('Deleted recipe %s', rid)
     return jsonify({'text': f'Recipe {rid} was deleted'}), 200

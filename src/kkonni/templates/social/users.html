@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{{ username }}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/users.css') }}">
+    <script src="{{ url_for('static', filename='script/users.js') }}" defer></script>
+{% endblock %}
+{% block content %}
+
+    <table class="users">
+        <thead>
+            <tr class="header">
+                <th>Nutzer</th>
+                <th onclick="sort_table(1)">Rezepte</th>
+                <th onclick="sort_table(2)">Kommentare</th>
+                <th onclick="sort_table(3)">Bewertungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in us %}
+                <tr class="user">
+                    <td class="name-col"><a href="{{ url_for('social.profile', uid=u.uid) }}">{{ u.username }}</a></td>
+                    <td class="recipes-col">{{ u.recipes }}</td>
+                    <td class="comments-col">{{ u.comments }}</td>
+                    <td class="ratings-col">{{ u.ratings }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

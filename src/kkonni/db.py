@@ -77,6 +77,17 @@ def init_create_database_command():
                 "registered"	INTEGER NOT NULL,
                 PRIMARY KEY("uid")
             )''')
+    db.execute('''CREATE TABLE "notification" (
+                "nid"	INTEGER,
+                "uid"	INTEGER NOT NULL,
+                "rid"	INTEGER NOT NULL,
+                "cid"	INTEGER,
+                "rating_id"	INTEGER,
+                "time"	INTEGER NOT NULL,
+                "message"	TEXT NOT NULL,
+                "seen"	INTEGER NOT NULL,
+                PRIMARY KEY("nid")
+            )''')
     db.commit()
     click.echo('Database created')
 
@@ -123,8 +134,9 @@ def init_delete_user_command(username):
 
     # gather the user's id and remove from user and user's comments
     uid = db.execute('SELECT uid FROM user WHERE username = ?', (username,)).fetchone()[0]
-    db.execute('DELETE FROM user WHERE username = ?', (username,))
+    db.execute('DELETE FROM user WHERE uid = ?', (uid,))
     db.execute('DELETE FROM comment WHERE uid = ?', (uid,))
+    db.execute('DELETE FROM notification WHERE uid = ?', (uid,))
 
     # remove the user's ratings
     rids = db.execute('SELECT rid FROM rating where uid = ?', (uid,)).fetchall()
@@ -134,7 +146,7 @@ def init_delete_user_command(username):
     # recalculate rating of recipes the user rated
     for rid in [rid[0] for rid in rids]:
         ratings = db.execute("SELECT rating FROM rating WHERE rid = ?", (rid,)).fetchall()
-        new_rating = round(sum(r[0] for r in ratings) / len(ratings))
+        new_rating = int(round(sum(r[0] for r in ratings) / len(ratings))) if len(ratings) > 0 else 0
         db.execute("UPDATE recipe SET rating = ? WHERE rid = ?", (new_rating, rid))
     db.commit()
 

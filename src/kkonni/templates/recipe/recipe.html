@@ -10,9 +10,7 @@
 
         <div id="header">
             <div id="name">{{ r.name }}</div>
-            <div id="rating">
-                {% include 'svg/stars.html' %}
-            </div>
+            <div id="rating" data-stars="{{ r.rating }}">{% include 'svg/stars.html' %}</div>
         </div>
 
         {% if r.uid == u.uid %}
@@ -33,21 +31,30 @@
             </div>
         </div>
 
-        <table id="tb-ings">
-            {% for ing in r.ingredients %}
-                <tr>
-                    <td class="td-amount">
-                        <div class="amount">{{ ing['amount'] }}</div>
-                    </td>
-                    <td class="td-unit">
-                        <div class="unit">{{ ing['unit'] }}</div>
-                    </td>
-                    <td class="td-name">
-                        <div class="name">{{ ing['name'] }}</div>
-                    </td>
-                </tr>
+        <div id="all-tb-ings">
+            {% for entry in r.ingredients %}
+                {% if entry['title']|length > 0 %}
+                    <div class="tb-ings-title">
+                        {{ entry['title'] }}
+                    </div>
+                {% endif %}
+                <table class="tb-ings">
+                    {% for ing in entry['data'] %}
+                        <tr>
+                            <td class="td-amount">
+                                <div class="amount">{{ ing['amount'] }}</div>
+                            </td>
+                            <td class="td-unit">
+                                <div class="unit">{{ ing['unit'] }}</div>
+                            </td>
+                            <td class="td-name">
+                                <div class="name">{{ ing['name'] }}</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
             {% endfor %}
-        </table>
+        </div>
 
         <div id="instructions">
             {% for instruction in r.instructions.split('\n') %}
@@ -58,17 +65,19 @@
         <div id="footer">
             <div id="tags">
                 {% for tag in r.tags.split(' ') %}
-                    <div class="tag">{{ tag }}</div>
+                    <a href="{{ url_for('book.index', q=tag) }}" class="tag">{{ tag }}</a>
                 {% endfor %}
             </div>
-            <div id="author">{{ r.author }}, {{ r.time }}</div>
+            <div id="author">
+                <a href="{{ url_for('social.profile', uid=r.uid) }}">{{ r.author }}, {{ r.time }}</a>
+            </div>
         </div>
 
     </div>
 
     <div id="comments">
 
-        <div id="comment-title">Kommentare</div>
+        <div id="comment-title">Kommentare<div class="comment-sort">&#8643;&#8638;</div></div>
 
         <div id="comment-form">
             {# set data-stars and .post in JS #}
@@ -77,26 +86,13 @@
             <textarea id="user-comment"></textarea>
             <div id="user-comment-buttons">
                 <button type="button" id="user-comment-cancel">Abbrechen</button>
-                <button type="button" id="user-comment-save"
-                        onclick="add_comment({{ r.rid }})">
-                    Speichern
-                </button>
+                <button type="button" id="user-comment-save" onclick="add_comment({{ r.rid }})">Speichern</button>
             </div>
         </div>
 
         <div id="comment-section">
             {% for c in cs %}
-                <div class="comment" id="comment-{{ c.cid }}">
-                    {% if c.uid == u.uid %}
-                        <div class="modify">
-                            <div onclick="delete_comment({{ c.cid }})">
-                                {% include 'svg/delete.html' %}
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="comment-content">{{ c.comment }}</div>
-                    <div class="author">{{ c.author }}, {{ c.time }}</div>
-                </div>
+                <div class="comment" data-time="{{ c['epoch'] }}" id="comment-{{ c.cid }}">{% if c.uid == u.uid %}<div class="modify"><div onclick="delete_comment({{ c.cid }})">{% include 'svg/delete.html' %}</div></div>{% endif %}<div class="comment-content">{{ c.comment }}</div><div class="author"><a href="{{ url_for('social.profile', uid=c.uid) }}">{{ c.author }}, {{ c.time }}</a></div></div>
             {% endfor %}
         </div>
 

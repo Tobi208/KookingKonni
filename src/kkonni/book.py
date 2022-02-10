@@ -1,7 +1,7 @@
 from json import loads
 
-from flask import Blueprint, render_template, session, redirect, url_for, request, escape
-from flask import send_from_directory, current_app
+from flask import Blueprint, render_template, session, redirect, url_for, request, escape, send_from_directory
+from flask import current_app as ca
 
 from kkonni import util
 from kkonni.auth import login_required, recipe_author
@@ -10,7 +10,7 @@ from kkonni.db import get_db
 bp = Blueprint("book", __name__)
 
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('/')
 @login_required
 def index():
     """
@@ -19,14 +19,14 @@ def index():
 
     # gather all recipes
     cur = get_db().cursor()
-    rs = cur.execute('SELECT rid, name, image, rating, keywords FROM recipe ORDER BY rid').fetchall()
+    rs = cur.execute('SELECT rid, name, image, rating, keywords, time FROM recipe ORDER BY name').fetchall()
 
-    # can post search words to the page to pre-filter
-    search_words = ''
-    if request.method == 'POST' and 'search' in request.form:
-        search_words = escape(request.form['search'])
-
-    return render_template('index.html', search_words=search_words, rs=rs)
+    return render_template(
+        'index.html',
+        u=util.get_userdata(session['uid']),
+        rs=rs,
+        search_words=request.args.get('q', '').strip()
+    )
 
 
 @bp.route('/<int:rid>')
@@ -52,12 +52,14 @@ def recipe(rid):
 
     # gather all comments of the recipe
     # convert timestamp and author and sort by newest comments first
-    cs = cur.execute('SELECT * FROM comment WHERE rid = ?', (rid,)).fetchall()
-    cs = [dict(c) | {'time': util.timestamp_to_date(c['time']), 'author': util.get_username(c['uid'])}
-          for c in sorted(cs, key=lambda c: c['time'] * -1)]
+    cs = cur.execute('SELECT * FROM comment WHERE rid = ? ORDER BY time DESC', (rid,)).fetchall()
+    cs = [dict(c) | {'time': util.timestamp_to_date(c['time']),
+                     'epoch': c['time'],
+                     'author': util.get_username(c['uid'])}
+          for c in cs]
 
     # gather user id and their rating of the recipe
-    u = {'uid': session['uid']}
+    u = dict(util.get_userdata(session['uid']))
     u_rating = cur.execute('SELECT rating FROM rating WHERE rid = ? AND uid = ?', (rid, session['uid'])).fetchall()
     u['rating'] = u_rating[0][0] if len(u_rating) > 0 else 0
 
@@ -72,6 +74,8 @@ def edit_recipe(rid):
     GET  - show change recipe form and prefill it with recipe details.
     POST - process recipe changes. Only the author can change a recipe.
     """
+
+    u = util.get_userdata(session['uid'])
 
     # simply gather recipe details
     if request.method == 'GET':
@@ -102,7 +106,8 @@ def edit_recipe(rid):
         # update image if applicable
         util.update_image(rid, request.files, image)
 
-        return redirect(url_for('book.recipe', rid=rid))
+        ca.logger.info('User %s (%s) edited recipe %s (%s)', u['username'], u['uid'], name, rid)
+        return redirect(url_for('book.recipe', u=u, rid=rid))
 
 
 @bp.route('/new', methods=('GET', 'POST'))
@@ -112,10 +117,11 @@ def new_recipe():
     GET  - show new recipe form.
     POST - process new recipe details.
     """
+    u = util.get_userdata(session['uid'])
 
     # simply display form
     if request.method == 'GET':
-        return render_template('recipe/new_recipe.html')
+        return render_template('recipe/new_recipe.html', u=u)
 
     # process new recipe details and redirect to result
     if request.method == 'POST':
@@ -138,7 +144,8 @@ def new_recipe():
         rid = cur.lastrowid
         util.update_image(rid, request.files, image)
 
-        return redirect(url_for('book.recipe', rid=rid))
+        ca.logger.info('User %s (%s) added recipe %s (%s)', u['username'], u['uid'], name, rid)
+        return redirect(url_for('book.recipe', u=u, rid=rid))
 
 
 @bp.route('/favicon.ico')
@@ -146,4 +153,4 @@ def favicon():
     """
     Route favicon.
     """
-    return send_from_directory(current_app.config['IMAGE_DIR'], 'favicon.png')
+    return send_from_directory(ca.config['IMAGE_DIR'], 'favicon.ico')

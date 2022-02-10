@@ -1,0 +1,40 @@
+#content {
+    display: flex;
+    justify-content: center;
+    width: 98%;
+}
+
+table.users {
+    border-collapse: collapse;
+    margin: 2em 0 2em 0;
+    padding: 2em;
+}
+
+table.users td,
+table.users th {
+    border: 1px solid #999;
+    padding: 0.5em;
+}
+
+table.users th {
+    font-size: 1.15em;
+}
+
+table.users th[onclick]:hover {
+    cursor: pointer;
+}
+
+table.users td {
+    font-size: 1.05em;
+}
+
+table.users tr.user td.recipes-col,
+table.users tr.user td.comments-col,
+table.users tr.user td.ratings-col {
+    text-align: right;
+}
+
+table.users tr.user td.name-col a {
+    text-decoration: none;
+    color: black;
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     {% block head %}
     <meta charset="UTF-8">
@@ -7,7 +7,15 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/stars.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.png') }}">
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+    <link rel="icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/favicon.png') }}">
+    <link rel="icon" type="image/gif" href="{{ url_for('static', filename='image/favicon.gif') }}">
+
     <script src="{{ url_for('static', filename='script/base.js') }}" defer></script>
     <script src="{{ url_for('static', filename='script/api.js') }}" defer></script>
     {% endblock %}
@@ -16,15 +24,15 @@
     <ul class="topnav">
 
         <li class="search">
-            <form action="{{ url_for('book.index') }}" method="POST">
-                <input type="text" id="search" name="search" value="{{ search_words or '' }}">
-            </form>
-        </li>
-
-        <li class="toggle">
-            <div class="toggle-bar"></div>
-            <div class="toggle-bar"></div>
-            <div class="toggle-bar"></div>
+            {% block sort_recipes %}{% endblock %}
+            <div class="search-input">
+                <input type="text" id="search" value="{{ search_words or '' }}" data-url="{{ url_for('book.index') }}">
+            </div>
+            <div class="toggle">
+                <div class="toggle-bar"></div>
+                <div class="toggle-bar"></div>
+                <div class="toggle-bar"></div>
+            </div>
         </li>
 
         <li class="flex-break"></li>
@@ -39,7 +47,12 @@
 
         <li class="flex-break"></li>
         <li class="submit">
-            <a href="{{ url_for('auth.logout') }}">Logout</a>
+            <a id="user-control" href="{{ url_for('social.profile', uid=u['uid']) }}">
+                {{ u['username'] }}
+                {% if u['notifications'] > 0 %}
+                    <div class="num-user-notifications">{{ u['notifications'] }}</div>
+                {% endif %}
+            </a>
         </li>
 
     </ul>
