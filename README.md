@@ -108,3 +108,4 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
   * Linked user profiles in recipes and comments
   * Added notifications
   * Added summary page of users
+* Improved Styling

@@ -80,6 +80,7 @@ ul.topnav li.submit #user-control {
 }
 
 ul.topnav li.submit .num-user-notifications {
+    margin-left: 0.5em;
     background: white;
     color: #9b25c9;
     border-radius: 100%;
@@ -88,6 +89,7 @@ ul.topnav li.submit .num-user-notifications {
     align-items: center;
     display: flex;
     justify-content: center;
+    padding: 0.2em;
 }
 
 
