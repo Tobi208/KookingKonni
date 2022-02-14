@@ -92,7 +92,7 @@ def add_rating(rid):
         rating_id = cur.lastrowid
     else:
         rating_id = rating_id[0][0]
-        cur.execute('UPDATE rating SET rating = ? WHERE id = ?', (rating, rating_id[0][0]))
+        cur.execute('UPDATE rating SET rating = ? WHERE id = ?', (rating, rating_id))
         get_db().commit()
 
     # create notification for recipe author
