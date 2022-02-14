@@ -111,4 +111,15 @@
         width: 98%;
     }
 
+    .list {
+        justify-content: center;
+    }
+
+    .list li,
+    .list li.comment {
+        width: 100%;
+        min-width: 0;
+        max-width: 20em;
+    }
+
 }
