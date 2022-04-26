@@ -13,6 +13,9 @@ IMAGE_DIR = join(_root_dir, 'static', 'image')
 # secret key!
 SECRET_KEY = b'_5#y2L"F4Q8z\n\xec]/'
 
+# more reliable cookies
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
 
 # -- user preferences -- #
 

@@ -117,3 +117,4 @@ Open up the ``wsgi`` file and include the line ``from __init__ import app as app
 * Improved styling
 * Click tag to search recipes that include it
 * Added sorting options for recipes and comments
+* Fixed cookies
